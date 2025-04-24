@@ -81,7 +81,7 @@ function Navbar() {
         </motion.button>
       </div>
 
-      <div className="flex items-center gap-4 mr-6">
+      <div className="flex items-center gap-4 text-center mr-7">
         {/* Title */}
         <motion.p className="text-bold text-3xl text-pink-300 select-none font-black">
           Readify

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { hoverSpring, fadeSlide } from "../utils/motionConfig.js";
+import { hoverSpring, fadeSlide, fadeSlideUp} from "../utils/motionConfig.js";
 
 function BookCarousel({ genre = "fiction" }) {
   // State to store the list of books
@@ -10,6 +10,8 @@ function BookCarousel({ genre = "fiction" }) {
   // State to manage loading state
   const [loading, setLoading] = useState(true);
 
+  const carouselRef = useRef(null); // Ref to the carousel container
+
   // Effect to fetch books from the Google Books API based on the genre
   useEffect(() => {
     // Function to fetch books from the API
@@ -17,7 +19,7 @@ function BookCarousel({ genre = "fiction" }) {
       try {
         const response = await fetch(
           // q=subject:${genre}&maxResults=10 query parameter to filter books by genre and limit the number of results
-          `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&maxResults=10`
+          `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&maxResults=20`
         );
         const data = await response.json(); // Parse the response as JSON
 
@@ -46,18 +48,36 @@ function BookCarousel({ genre = "fiction" }) {
     // Dependency array to re-fetch books when the genre changes
   }, [genre]);
 
+  //Effect to set up an interval for automatic scrolling
+  useEffect(() => {
+    if(!loading && carouselRef.current) {
+        const interval = setInterval(() => {
+            scroll("right");
+        }, 5000); // Change the interval time as needed (5000ms = 5 seconds)
+        return () => clearInterval(interval); // Cleanup the interval on component unmount
+     }
+    }, [loading]); // This effect sets up an interval to automatically scroll the carousel every 5 seconds
+
   //Function to handle scrolling the carousel left or right
   const scroll = (direction) => {
     // Get the carousel container element by its ID
     // The ID is dynamically generated based on the genre prop passed to the component
-    const container = document.getElementById(`carousel-${genre}`);
+    const container = carouselRef.current;
     if (container) {
       // Calculate the scroll amount based on the direction
       const scrollAmount = 300;
-      const newScrollX =
+      const maxScrollLeft = container.scrollWidth - container.clientWidth; // Maximum scrollable width
+      let newScrollX =
         direction === "left"
           ? container.scrollLeft - scrollAmount
           : container.scrollLeft + scrollAmount;
+
+        // If the new scroll position exceeds the bounds, wrap around to the other side
+          if (newScrollX < 0) {
+            newScrollX = maxScrollLeft;
+          } else if (newScrollX > maxScrollLeft) {
+            newScrollX = 0;
+          }
       container.scrollTo({ left: newScrollX, behavior: "smooth" });
     }
   };
@@ -67,14 +87,11 @@ function BookCarousel({ genre = "fiction" }) {
     {/* Carousel container */}
     {! loading && (
         <motion.div
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 30 }}
-        transition={{ duration: 0.6 }}>
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-6xl mx-auto"
+        {...fadeSlideUp}>
 
         {/* Genre */}
-        <h2 className="text-2xl font-bold text-violet-700 mb-4 capitalize">
+        <h2 className="text-2xl font-bold text-violet-700 mb-4 capitalize text-center">
             {genre}
             <hr className="mt-5" />
         </h2>
@@ -91,8 +108,8 @@ function BookCarousel({ genre = "fiction" }) {
 
             {/* Book */}
             <div
-            id={`carousel-${genre}`}
-            className="flex overflow-x-auto gap-4 scroll-smooth px-2 py-4"
+            ref={carouselRef} // Attach the ref to the carousel container
+            className="flex gap-4 overflow-x-auto scrollbar-hide px-2"
             {...fadeSlide}>
 
             {/* Map through the books and render each book item */}
@@ -100,18 +117,18 @@ function BookCarousel({ genre = "fiction" }) {
                 // Each book item is wrapped in a motion.div for animation
                 <motion.div
                 key={book.id}
-                className="min-w-[150px] bg-violet-100 rounded-lg shadow-md p-2 text-center"
+                className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
                 {...hoverSpring}>
 
                 {/* Book cover image */}
                 <img
                     src={book.cover}
                     alt={book.title}
-                    className="rounded-md mb-2 w-full h-[220px] object-cover"
+                    className="rounded-md mb-2 w-full h-[220px] object-cover shadow-violet-600 shadow-lg"
                     {...fadeSlide}/>
 
                 {/* Title */}
-                <p className="text-sm text-violet-800 font-medium truncate">
+                <p className="text-md text-violet-800 font-medium truncate">
                     {book.title}
                 </p>
                 </motion.div>
