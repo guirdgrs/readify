@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BookOpenText, User, AlignJustify, Bookmark } from "lucide-react";
-import {motion, AnimatePresence, animate} from "framer-motion";
+import {motion, AnimatePresence, animate, hover} from "framer-motion";
+import {hoverSpring, fadeSlide} from "./utils/motionConfig.js";
 import NavbarItem from "./NavbarItem";
 
 function Navbar (){
@@ -67,8 +68,7 @@ function Navbar (){
                 <motion.a 
                 href="#start"
                 className="hover:text-pink-400"
-                whileHover={{scale: 1.1}}
-                transition={{type: "spring", stiffness: 300}}>
+                {...hoverSpring}>
                     <BookOpenText size={40}/>
                 </motion.a>
 
@@ -77,8 +77,7 @@ function Navbar (){
                 ref={buttonRef}
                 onClick={toggleDropdown}
                 className="hover:text-pink-400"
-                whileHover={{scale: 1.3}}
-                transition={{type: "spring", stiffness: 300}}>
+                {...hoverSpring}>
                     <AlignJustify/>
                 </motion.button>
             </div>
@@ -107,11 +106,8 @@ function Navbar (){
                     // motion.div is used to animate the dropdown menu
                     <motion.div
                         ref={dropdownRef}
-                        initial={{opacity: 0, y: -10}}
-                        animate={{opacity: 1, y: 0}}
-                        exit={{opacity: 0, y: -10}}
-                        transition={{duration: 0.2}}
-                        className="absolute top-20 left-6 bg-violet-300 text-purple-800 rounded-md p-4 px-8 flex flex-col divide-y divide-violet-400 gap-2">
+                        className="absolute top-20 left-6 bg-violet-300 text-purple-800 rounded-md p-4 px-8 flex flex-col divide-y divide-violet-400 gap-2"
+                        {...fadeSlide}>
 
                         {/* Dropdown items */}
                         <NavbarItem label="Book" href="#books" onClick={() => setDropdownOpen(false)}/>
@@ -127,11 +123,8 @@ function Navbar (){
                 {dropdownLogin && (
                     <motion.div
                         ref={loginRef}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-20 right-6 bg-violet-300 rounded-md p-4 px-8 w-64 flex flex-col gap-4 z-50">
+                        className="absolute top-20 right-6 bg-violet-300 rounded-md p-4 px-8 w-64 flex flex-col gap-4 z-50"
+                        {...fadeSlide}>
 
                         <div className="flex justify-center text-violet-600">
                             <User size={30} />
@@ -141,20 +134,17 @@ function Navbar (){
                             type="email"
                             placeholder="Email"
                             className="border p-2 rounded-md border-violet-600 outline-pink-600 bg-violet-200"
-                            whileHover={{scale: 1.05}}
-                            transition={{type: "spring", stiffness: 300}}/>
+                            {...hoverSpring}/>
                         <motion.input
                             type="password"
                             placeholder="Password"
                             className="border p-2 rounded-md border-violet-600 outline-pink-600 bg-violet-200"
-                            whileHover={{scale: 1.05}}
-                            transition={{type: "spring", stiffness: 300}}/>
+                            {...hoverSpring}/>
                         <motion.button
                             onClick={() => {
                             setDropdownLogin(false);}}
                             className="bg-violet-500 text-white py-2 rounded-md hover:bg-violet-600"
-                            whileHover={{scale: 1.05}}
-                            transition={{type: "spring", stiffness: 300}}>
+                            {...hoverSpring}>
                                 Login
                         </motion.button>
                     </motion.div>
