@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { fadeSlideUp, hoverSpring } from "../utils/motionConfig.js";
+import { fadeSlideUp, hoverSpring, hoverSpring2 } from "../utils/motionConfig.js";
 import Navbar from "../navbar/Navbar.jsx";
 import BookLoading from "../bookdetail/BookLoading.jsx";
+import BookNotFound from "../bookdetail/BookNotFound.jsx";
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -29,6 +30,7 @@ function BookDetail() {
           image:
             data.volumeInfo.imageLinks?.thumbnail ||
             "https://placehold.co/200x300?text=Sem+Capa",
+          link: data.volumeInfo.infoLink, // Link to the book's page on Google Books
         });
       } catch {
         alert("Error fetching book details. Please try again later.");
@@ -60,7 +62,7 @@ function BookDetail() {
   // Render the book details if the book is found
   // If the book is not found, display an error message
   if (!book) {
-    return <p className="text-center text-red-600 mt-10">Book not found.</p>;
+    return <BookNotFound />;
   }
 
   return (
@@ -72,10 +74,18 @@ function BookDetail() {
         {...fadeSlideUp}>
 
         <div className="flex flex-col md:flex-row gap-6 items-center">
-            <img
-            src={book.image}
-            alt={book.title}
-            className="w-[200px] h-[300px] rounded-md shadow-md"/>
+
+            <a 
+            href={book.link}
+            target="_blank"
+            rel="noopener noreferrer">
+              
+              <motion.img
+              src={book.image}
+              alt={book.title}
+              className="w-[200px] h-[300px] rounded-md shadow-md cursor-pointer"
+              {...hoverSpring2}/>
+            </a>
             
             <div className="flex-1 text-center">
             <motion.h1

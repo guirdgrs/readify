@@ -1,10 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home.jsx';
 import BookDetail from './components/pages/BookDetail.jsx';
+import FaviconManager from './components/utils/FavIconManager.jsx';
 
 function App() {
   return (
+
     <Router>
+            <FaviconManager />
       <Routes>
         {/* Define the routes for the application */}
         {/* The path "/" renders the Home component */}
