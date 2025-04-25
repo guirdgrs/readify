@@ -64,13 +64,12 @@ function Navbar() {
       <div className="text-pink-300 flex items-center gap-4">
         {/* Logo */}
         <Link to ="/">
-        <motion.a
-          href="#start"
-          className="hover:text-pink-400"
+        <motion.div
+          className="hover:text-pink-400 cursor-pointer"
           {...hoverSpring}>
 
           <BookOpenText size={40} />
-        </motion.a>
+        </motion.div>
         </Link>
 
         {/* Button to toggle dropdown */}
