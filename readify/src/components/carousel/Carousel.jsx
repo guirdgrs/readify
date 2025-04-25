@@ -29,7 +29,7 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
       try {
         const response = await fetch(
           // q=subject:${genre}&maxResults=10 query parameter to filter books by genre and limit the number of results
-          `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&maxResults=20`
+          `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&maxResults=20&langRestrict=en`
         );
 
         const data = await response.json(); // Parse the response as JSON
@@ -42,7 +42,7 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
             title: item.volumeInfo.title,
             cover:
               item.volumeInfo.imageLinks?.thumbnail ||
-              "https://placehold.co/150x220?text=Sem+Capa", // Default cover image if not available
+              "https://placehold.co/150x220?text=No+Image", // Default cover image if not available
           })) || [];
 
         // Update the state with the formatted book data
@@ -120,7 +120,7 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
             {/* Left scroll button */}
             <button
             onClick={() => scroll("left")}
-            className="p-2 text-violet-600 hover:text-violet-800">
+            className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
                 <ChevronLeft />
             </button>
 
@@ -160,7 +160,7 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
                 {/* Right scroll button */}
                 <button
                 onClick={() => scroll("right")}
-                className="p-2 text-violet-600 hover:text-violet-800">
+                className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
                     <ChevronRight />
                 </button>
         </div> {/* Carousel content ends here */}
