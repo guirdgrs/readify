@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fadeSlideUp, hoverSpring } from "../utils/motionConfig.js";
 import Navbar from "../navbar/Navbar.jsx";
+import BookLoading from "../bookdetail/BookLoading.jsx";
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -16,6 +17,7 @@ function BookDetail() {
         const response = await fetch(
           `https://www.googleapis.com/books/v1/volumes/${id}`
         );
+
         const data = await response.json();
         // Set the book state with the fetched data
         // The data is expected to contain information about the book, including title, authors, description, and image links
@@ -53,9 +55,8 @@ function BookDetail() {
 
   // Render loading state or error message if applicable
   if (loading) {
-    return <p className="text-center text-violet-700 mt-10">Loading...</p>;
+    return <BookLoading />;
   }
-
   // Render the book details if the book is found
   // If the book is not found, display an error message
   if (!book) {

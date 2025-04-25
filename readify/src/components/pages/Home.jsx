@@ -13,7 +13,7 @@ function App() {
           {genres.map((genres => (
             // for each genre, a BookCarousel component is rendered
             // The key prop is used to uniquely identify each component in the list
-            <BookCarousel genre={genres} key={genres}/>
+            <BookCarousel genre={genres} key={genres} delay={500}/>
           )))}
     </div>
   );

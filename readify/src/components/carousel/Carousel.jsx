@@ -1,11 +1,12 @@
 import { use, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Book, ChevronLeft, ChevronRight } from "lucide-react";
 import { hoverSpring, hoverSpring2, fadeSlide, fadeSlideUp, showCarousel} from "../utils/motionConfig.js";
 import { Link } from "react-router-dom";
 import '../../App.css';
+import BookLoading from "../bookdetail/BookLoading.jsx";
 
-function BookCarousel({ genre = "fiction" }) {
+function BookCarousel({ genre = "fiction", delay = 0 }) {
   // State to store the list of books
   const [books, setBooks] = useState([]);
 
@@ -16,6 +17,13 @@ function BookCarousel({ genre = "fiction" }) {
 
   // Effect to fetch books from the Google Books API based on the genre
   useEffect(() => {
+
+    // Set loading to true when the component mounts or when the genre changes
+    setLoading(true);
+
+    // Set a timeout to delay the API call
+    const timer = setTimeout(() => {
+
     // Function to fetch books from the API
     async function fetchBooks() {
       try {
@@ -23,6 +31,7 @@ function BookCarousel({ genre = "fiction" }) {
           // q=subject:${genre}&maxResults=10 query parameter to filter books by genre and limit the number of results
           `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&maxResults=20`
         );
+
         const data = await response.json(); // Parse the response as JSON
 
         // Format the book data to extract relevant information
@@ -38,17 +47,20 @@ function BookCarousel({ genre = "fiction" }) {
 
         // Update the state with the formatted book data
         setBooks(formattedBooks);
-      } catch (error) {
+      } catch {
         // Handle any errors that occur during the fetch
-        console.error("Erro ao buscar livros:", error);
+        console.error("Error");
       } finally {
         setLoading(false); // Set loading to false after the fetch is complete
       }
     }
     // Call the fetchBooks function to initiate the API request
     fetchBooks();
+  }, delay || 0); // Delay the API call by the specified delay time (default is 0)
+
+    return () => clearTimeout(timer); // Cleanup the timer on component unmount
     // Dependency array to re-fetch books when the genre changes
-  }, [genre]);
+  }, [genre, delay]);
 
   //Effect to set up an interval for automatic scrolling
   useEffect(() => {
@@ -86,9 +98,13 @@ function BookCarousel({ genre = "fiction" }) {
   
   return (
     <AnimatePresence>
-    {/* Carousel container */}
-    {! loading && (
-        <motion.div
+      {/* The loading state is used to conditionally render the loading animation or the carousel content */}
+      {loading ? (
+        <BookLoading /> // Show loading animation while fetching books
+      ) : books && books.length > 0 ? (
+
+        // If books are available, render the carousel
+        <motion.div 
         className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-5xl mx-auto"
         {...fadeSlideUp}>
 
@@ -121,7 +137,6 @@ function BookCarousel({ genre = "fiction" }) {
                 // The key prop is used to uniquely identify each book item
                 <Link to={`/book/${book.id}`} key={book.id}>
                   <motion.div
-                  key={book.id}
                   className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
                   {...hoverSpring2}
                   {...showCarousel}>
@@ -150,7 +165,13 @@ function BookCarousel({ genre = "fiction" }) {
                 </button>
         </div> {/* Carousel content ends here */}
         </motion.div>
-        )}
+          ) : (
+          <div 
+          className="text-center text-violet-700 py-6">
+            <p 
+            className="text-lg">😓 Sorry! An error occurred</p>
+          </div>
+          )}
     </AnimatePresence >
   );
 }
