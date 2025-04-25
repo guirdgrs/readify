@@ -5,6 +5,7 @@ import { fadeSlide, hoverSpring } from "../utils/motionConfig.js";
 import NavbarItem from "./NavbarItem";
 import NavbarDropdownMenu from "./NavbarDropdownMenu";
 import NavbarDropdownLogin from "./NavbarDropdownLogin";
+import {Link} from "react-router-dom";
 
 function Navbar() {
   // DROPDOWN LEFT MENU
@@ -62,6 +63,7 @@ function Navbar() {
 
       <div className="text-pink-300 flex items-center gap-4">
         {/* Logo */}
+        <Link to ="/">
         <motion.a
           href="#start"
           className="hover:text-pink-400"
@@ -69,6 +71,7 @@ function Navbar() {
 
           <BookOpenText size={40} />
         </motion.a>
+        </Link>
 
         {/* Button to toggle dropdown */}
         <motion.button
@@ -82,9 +85,11 @@ function Navbar() {
 
       <div className="flex items-center gap-4 text-center mr-7">
         {/* Title */}
+        <Link to="/">
         <motion.p className="text-bold text-3xl text-pink-300 select-none font-black">
           Readify
         </motion.p>
+        </Link>
       </div>
 
       {/* Your profile button */}

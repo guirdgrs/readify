@@ -2,6 +2,8 @@ import { use, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { hoverSpring, hoverSpring2, fadeSlide, fadeSlideUp, showCarousel} from "../utils/motionConfig.js";
+import { Link } from "react-router-dom";
+import '../../App.css';
 
 function BookCarousel({ genre = "fiction" }) {
   // State to store the list of books
@@ -87,7 +89,7 @@ function BookCarousel({ genre = "fiction" }) {
     {/* Carousel container */}
     {! loading && (
         <motion.div
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-6xl mx-auto"
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-5xl mx-auto"
         {...fadeSlideUp}>
 
         {/* Genre */}
@@ -109,30 +111,34 @@ function BookCarousel({ genre = "fiction" }) {
             {/* Book */}
             <div
             ref={carouselRef} // Attach the ref to the carousel container
-            className="flex overflow-x-auto overflow-y-hidden gap-4 px-2 py-6 scrollbar-custom scrollbar-hover"
+            className="flex overflow-x-auto overflow-y-hidden gap-4 px-2 py-6 scrollbar-custom"
             {...fadeSlide}>
 
             {/* Map through the books and render each book item */}
             {books.map((book) => (
                 // Each book item is wrapped in a motion.div for animation
-                <motion.div
-                key={book.id}
-                className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
-                {...hoverSpring2}
-                {...showCarousel}>
+                // The Link component is used to navigate to the book detail page
+                // The key prop is used to uniquely identify each book item
+                <Link to={`/book/${book.id}`} key={book.id}>
+                  <motion.div
+                  key={book.id}
+                  className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
+                  {...hoverSpring2}
+                  {...showCarousel}>
 
-                {/* Book cover image */}
-                <img
-                    src={book.cover}
-                    alt={book.title}
-                    className="rounded-md mb-2 w-full h-[220px] object-cover shadow-violet-600 shadow-lg"
-                    {...fadeSlide}/>
+                    {/* Book cover image */}
+                    <img
+                        src={book.cover}
+                        alt={book.title}
+                        className="rounded-md mb-2 w-full h-[220px] object-cover shadow-violet-600 shadow-lg"
+                        {...fadeSlide}/>
 
-                {/* Title */}
-                <p className="text-md text-violet-800 font-medium line-clamp-3">
-                    {book.title}
-                </p>
-                </motion.div>
+                    {/* Title */}
+                    <p className="text-md text-violet-800 font-medium line-clamp-3">
+                        {book.title}
+                    </p>
+                  </motion.div>
+                </Link>
             ))}  {/* Book item ends here */}
             </div>
 
