@@ -38,6 +38,9 @@ function BookDetail() {
   }, [inView, controls]);
 
   useEffect(() => {
+
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top of the page when the component mounts
+    setLoading(true); // Set loading state to true before fetching book details
     // Function to fetch book details from the Google Books API using the provided ID
     async function fetchBook() {
       try {
@@ -84,6 +87,8 @@ function BookDetail() {
     fetchBook();
     // Dependency array to re-fetch book details when the ID changes
   }, [id]);
+
+  if(loading || !book) return <BookLoading />; // Show loading state if the book is still being fetched or if the book is not found
 
   // Function to fetch books by author
   async function fetchBooksByAuthor(author, bookId) {
