@@ -6,3 +6,32 @@
   -ms-overflow-style: none;
   scrollbar-width: none; 
 }
+
+/* Hidding the vertical scrollbar */
+.allow-vertical-scroll {
+  touch-action: pan-y;
+}
+
+/* Custom scrollbar */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #a78bfa #ede9fe;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #ede9fe;
+  border-radius: 9999px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #a78bfa; 
+  border-radius: 9999px;
+}
+
+.scrollbar-custom:hover::-webkit-scrollbar-thumb {
+  background-color: #7c3aed;
+}

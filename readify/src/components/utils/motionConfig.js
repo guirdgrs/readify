@@ -5,6 +5,11 @@ export const hoverSpring = {
     whileHover: { scale: 1.1 },
     transition: { type: "spring", stiffness: 300 },
   };
+
+export const hoverSpring2 = {
+    whileHover: { scale: 1.05 },
+    transition: { type: "spring", stiffness: 300 },
+  };
   
 // Fade in effect
   export const fadeSlide = {
@@ -20,6 +25,13 @@ export const hoverSpring = {
     exit: { opacity: 0, y: 30 },
     transition: { duration: 0.6 },
   };
+
+  export const showCarousel = {
+    initial: { opacity: 0, y: 50 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.10 },
+    transition: { duration: 0.6, ease: "easeOut" },
+  }
 
 
   

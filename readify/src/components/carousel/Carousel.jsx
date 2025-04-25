@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { use, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { hoverSpring, fadeSlide, fadeSlideUp} from "../utils/motionConfig.js";
+import { hoverSpring, hoverSpring2, fadeSlide, fadeSlideUp, showCarousel} from "../utils/motionConfig.js";
 
 function BookCarousel({ genre = "fiction" }) {
   // State to store the list of books
@@ -81,7 +81,7 @@ function BookCarousel({ genre = "fiction" }) {
       container.scrollTo({ left: newScrollX, behavior: "smooth" });
     }
   };
-
+  
   return (
     <AnimatePresence>
     {/* Carousel container */}
@@ -109,7 +109,7 @@ function BookCarousel({ genre = "fiction" }) {
             {/* Book */}
             <div
             ref={carouselRef} // Attach the ref to the carousel container
-            className="flex gap-4 overflow-x-auto scrollbar-hide px-2"
+            className="flex overflow-x-auto overflow-y-hidden gap-4 px-2 py-6 scrollbar-custom scrollbar-hover"
             {...fadeSlide}>
 
             {/* Map through the books and render each book item */}
@@ -118,7 +118,8 @@ function BookCarousel({ genre = "fiction" }) {
                 <motion.div
                 key={book.id}
                 className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
-                {...hoverSpring}>
+                {...hoverSpring2}
+                {...showCarousel}>
 
                 {/* Book cover image */}
                 <img
@@ -128,7 +129,7 @@ function BookCarousel({ genre = "fiction" }) {
                     {...fadeSlide}/>
 
                 {/* Title */}
-                <p className="text-md text-violet-800 font-medium truncate">
+                <p className="text-md text-violet-800 font-medium line-clamp-3">
                     {book.title}
                 </p>
                 </motion.div>
