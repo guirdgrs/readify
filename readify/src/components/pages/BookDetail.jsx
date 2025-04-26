@@ -6,7 +6,7 @@ import Navbar from "../navbar/Navbar.jsx";
 import BookLoading from "../bookdetail/BookLoading.jsx";
 import BookNotFound from "../bookdetail/BookNotFound.jsx";
 import BookCard from "../bookdetail/BookCard.jsx";
-import { Book } from "lucide-react";
+import { Book, MessageCircleMore, Star } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 
 function BookDetail() {
@@ -20,6 +20,14 @@ function BookDetail() {
   const [sameGenreBooks, setSameGenreBooks] = useState([]);
   // State variable to manage loading state for related books
   const [loadingRelated, setLoadingRelated] = useState(true);
+
+  // State to manage the favorite button
+  const [favorited, setFavorited] = useState(false);
+
+  // Função para alterar o state do favorite button
+  const toggleFavorite = () => {
+    setFavorited(!favorited);
+  };
 
   //Controllers for animation by scrolling
   const controls = useAnimation();
@@ -175,7 +183,7 @@ function BookDetail() {
         <Navbar />
 
         <motion.div
-        className="max-w-4xl mx-auto mt-10 p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800"
+        className="max-w-4xl mx-auto mt-10 p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative"
         {...fadeSlideUp}>
 
         <div className="flex flex-col md:flex-row gap-6 items-center">
@@ -192,6 +200,7 @@ function BookDetail() {
               {...hoverSpring2}/>
             </a>
             
+            {/* Book details div */}
             <div className="flex-1 text-center">
             <motion.h1
                 className="text-3xl font-bold mb-2 text-violet-700">
@@ -215,7 +224,22 @@ function BookDetail() {
                 {book.description}
             </p>
             </div>
-        </div>
+
+            {/* Button div */}
+            <div className="absolute bottom-6 flex gap-4 ml-8">
+              <motion.button
+              {...hoverSpring2}
+              className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
+                <Star/>
+              </motion.button>
+
+              <motion.button
+              {...hoverSpring2}
+              className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
+                <MessageCircleMore/>
+              </motion.button>
+              </div>
+            </div>
         </motion.div>
 
         {/* Books by the same author section */}
