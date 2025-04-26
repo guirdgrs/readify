@@ -207,7 +207,7 @@ function BookDetail() {
         {...fadeSlideUp}>
 
         <div className="flex flex-col md:flex-row gap-6 items-center">
-
+          <div className="flex flex-col items-center">
             <a 
             href={book.link}
             target="_blank"
@@ -219,6 +219,31 @@ function BookDetail() {
               className="w-[200px] h-[300px] rounded-md shadow-md cursor-pointer"
               {...hoverSpring2}/>
             </a>
+
+              {/* Button div */}
+              <div className="flex gap-4 mt-4">
+                <motion.button
+                // Call the function
+                onClick={() => {
+                  toggleFavorite();
+                }}
+                {...hoverSpring2}
+                whiletap={{scale: 1.3}}
+                animate={{backgroundColor: favorited ? "#facc15" : "#7c3aed"}}
+                transition={{type: "spring", stiffness: 300}}
+                className="px-4 py-2 rounded-lg shadow-md cursor-pointer text-white bg-violet-500">
+
+                  {favorited ? <Star className="text-white" fill={favorited ? "#ffffff" : "none"}/> : <Star/>}
+                </motion.button>  
+
+                <motion.button
+                onClick={handleToggleFeedback}
+                {...hoverSpring2}
+                className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
+                  <MessageCircleMore/>
+                </motion.button>
+              </div>
+            </div>
             
             {/* Book details div */}
             <div className="flex-1 text-center">
@@ -226,6 +251,7 @@ function BookDetail() {
                 className="text-3xl font-bold mb-2 text-violet-700">
                 {book.title}
             </motion.h1>
+
                 {book.authors && (
                     <p className="text-md font-medium mb-4">
                     {/* getting  */}
@@ -240,34 +266,11 @@ function BookDetail() {
                     Description
                 </h3>
 
-            <p className="text-sm leading-relaxed">
-                {book.description}
-            </p>
+              <p className="text-sm leading-relaxed">
+                  {book.description}
+              </p>
             </div>
-
-            {/* Button div */}
-            <div className="absolute bottom-1 right-1 flex gap-4 ml-8 mt-7">
-              <motion.button
-              onClick={() => {
-                toggleFavorite();
-              }}
-              {...hoverSpring2}
-              whiletap={{scale: 1.3}}
-              animate={{backgroundColor: favorited ? "#facc15" : "7c3aed"}}
-              transition={{type: "spring", stiffness: 300}}
-              className="px-4 py-2 rounded-lg shadow-md cursor-pointer text-white bg-violet-500">
-
-                {favorited ? <Star className="text-white" /> : <Star/>}
-              </motion.button>  
-
-              <motion.button
-              onClick={handleToggleFeedback}
-              {...hoverSpring2}
-              className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
-                <MessageCircleMore/>
-              </motion.button>
-              </div>
-            </div>
+          </div>
         </motion.div>
 
         {showFeedback && (
