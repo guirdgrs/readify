@@ -8,6 +8,9 @@ import BookNotFound from "../bookdetail/BookNotFound.jsx";
 import BookCard from "../bookdetail/BookCard.jsx";
 import { Book, MessageCircleMore, Star } from "lucide-react";
 import { useInView } from "react-intersection-observer";
+import FeedbackSection from "../bookdetail/FeedbackSection.jsx";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -24,10 +27,27 @@ function BookDetail() {
   // State to manage the favorite button
   const [favorited, setFavorited] = useState(false);
 
-  // Função para alterar o state do favorite button
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  // Function to change the state of the favorite button
   const toggleFavorite = () => {
     setFavorited(!favorited);
   };
+
+  const handleFeedbackSend = () => {
+    withReactContent(Swal).fire({
+      title: "Thanks for the feedback!",
+      text: "Your feedback is important!",
+      icon: "success",
+      confirmButtonColor: "#7c3aed",
+      confirmButtonText: "Close",
+    });
+    setShowFeedback(false);
+  };
+
+  const handleToggleFeedback = () => {
+    setShowFeedback((prev => !prev)); //If its open it close, if its close it opens
+  }
 
   //Controllers for animation by scrolling
   const controls = useAnimation();
@@ -226,14 +246,22 @@ function BookDetail() {
             </div>
 
             {/* Button div */}
-            <div className="absolute bottom-6 flex gap-4 ml-8">
+            <div className="absolute bottom-1 right-1 flex gap-4 ml-8 mt-7">
               <motion.button
+              onClick={() => {
+                toggleFavorite();
+              }}
               {...hoverSpring2}
-              className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
-                <Star/>
-              </motion.button>
+              whiletap={{scale: 1.3}}
+              animate={{backgroundColor: favorited ? "#facc15" : "7c3aed"}}
+              transition={{type: "spring", stiffness: 300}}
+              className="px-4 py-2 rounded-lg shadow-md cursor-pointer text-white bg-violet-500">
+
+                {favorited ? <Star className="text-white" /> : <Star/>}
+              </motion.button>  
 
               <motion.button
+              onClick={handleToggleFeedback}
               {...hoverSpring2}
               className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
                 <MessageCircleMore/>
@@ -241,6 +269,10 @@ function BookDetail() {
               </div>
             </div>
         </motion.div>
+
+        {showFeedback && (
+          <FeedbackSection onClose={()=> setShowFeedback(false)}
+          onSend={handleFeedbackSend}/>)}
 
         {/* Books by the same author section */}
         {book.authors && book.authors.length > 0 && (
@@ -278,7 +310,6 @@ function BookDetail() {
         </motion.div>
       )}
 
-
       {/* Same genre section */}
       {/* If the book has categories, display similar books in the same category */}
       {book.categories && book.categories.length > 0 && (
@@ -313,6 +344,7 @@ function BookDetail() {
           ) : (
             <p className="text-violet-600">No similar books in this category found.</p>
           )}
+
         </motion.div>
       )}
     </div>
