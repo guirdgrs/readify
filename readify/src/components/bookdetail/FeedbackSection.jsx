@@ -25,7 +25,7 @@ function FeedbackSection({onClose, onSend}) {
     return(
         <motion.div
         {...fadeSlideUp}
-        className="mt-8 p-6 bg-violet-200 rounded-xl shadow-inner text-violet-800">
+        className="mt-8 p-6 bg-violet-200 rounded-xl shadow-inner text-violet-800 max-w-4xl mx-auto">
             <div 
             className="flex justify-between items-center mb-4">
                 <h2 

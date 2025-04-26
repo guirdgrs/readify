@@ -41,8 +41,15 @@ export const hoverSpring2 = {
     transition:{ duration: 0.6 },
   }
 
-  export const loadingScale ={
+  export const loadingScale = {
     animate:{scale: [1, 1.05, 1] },
     transition:{duration: 1.5, repeat: Infinity },
+  }
+
+  export const showFeedback = {
+    initial:{opacity: 0, y: 20},
+    animate:{opacity: 1, y: 0},
+    exit:{opacity: 0, scale: 0.8, y: 50},
+    transition:{duration: 0.4},
   }
   

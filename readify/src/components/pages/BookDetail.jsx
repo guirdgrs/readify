@@ -1,6 +1,6 @@
 import { use, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { fadeSlideUp, hoverSpring, hoverSpring2, showCarousel } from "../utils/motionConfig.js";
 import Navbar from "../navbar/Navbar.jsx";
 import BookLoading from "../bookdetail/BookLoading.jsx";
@@ -273,9 +273,13 @@ function BookDetail() {
           </div>
         </motion.div>
 
+        <AnimatePresence>
         {showFeedback && (
-          <FeedbackSection onClose={()=> setShowFeedback(false)}
-          onSend={handleFeedbackSend}/>)}
+          <FeedbackSection 
+          onClose={()=> setShowFeedback(false)}
+          onSend={handleFeedbackSend}
+          {...showFeedback}/>)}
+        </AnimatePresence>
 
         {/* Books by the same author section */}
         {book.authors && book.authors.length > 0 && (
