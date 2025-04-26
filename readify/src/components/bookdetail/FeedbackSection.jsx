@@ -21,7 +21,6 @@ function FeedbackSection({onClose, onSend}) {
             onSend();
         };
 
-
     return(
         <motion.div
         {...fadeSlideUp}
@@ -39,7 +38,6 @@ function FeedbackSection({onClose, onSend}) {
                     size={30} 
                     className="cursor-pointer text-red-400 hover:text-red-600 font-bold text-lg"/>
                 </button>
-
 
             </div>
 

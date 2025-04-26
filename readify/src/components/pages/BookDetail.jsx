@@ -10,7 +10,8 @@ import { Book, MessageCircleMore, Star } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import FeedbackSection from "../bookdetail/FeedbackSection.jsx";
 import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import withReactContent from 'sweetalert2-react-content'
+import { Link } from "react-router-dom";
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -34,7 +35,9 @@ function BookDetail() {
     setFavorited(!favorited);
   };
 
+  // Function to handle sending feedback
   const handleFeedbackSend = () => {
+    // Using Sweetalert2
     withReactContent(Swal).fire({
       title: "Thanks for the feedback!",
       text: "Your feedback is important!",
@@ -251,13 +254,21 @@ function BookDetail() {
                 className="text-3xl font-bold mb-2 text-violet-700">
                 {book.title}
             </motion.h1>
-
+                {/* Author */}
                 {book.authors && (
                     <p className="text-md font-medium mb-4">
-                    {/* getting  */}
-                    Author{book.authors.length > 1 ? "es" : ""}:{" "}
-                    {book.authors.join(", ")}
-                    </p>
+                    Author{book.authors.length > 1 ? "s" : ""}:{" "}
+                    {book.authors.map((author, index) => (
+                      <span key={index}>
+                        <Link
+                          to={`/author/${encodeURIComponent(author)}`}
+                          className="text-violet-700 hover:text-violet-900">
+                          {author}
+                        </Link>
+                          {index < book.authors.length - 1 ? ", " : ""}
+                      </span>
+                    ))}
+                  </p>
                 )}
 
                 <hr/>
