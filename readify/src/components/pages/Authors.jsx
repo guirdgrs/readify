@@ -5,6 +5,7 @@ import AuthorNotFound from "../authordetail/AuthorNotFound";
 import { fadeSlideUp } from "../utils/motionConfig";
 import Navbar from "../navbar/Navbar";
 import Loading from "../utils/Loading";
+import Fuse from "fuse.js";
 
 function Authors() {
   // State for authors
@@ -19,7 +20,11 @@ function Authors() {
   // State for search authors
   const [searchQuery, setSearchQuery] = useState("");
 
+  // State for search results
   const [searchResults, setSearchResults] = useState([]);
+
+  // State for no results found
+  const [noResultsFound, setNoResultsFound] = useState(false);
 
   // Predefined popular authors
   const predefinedPopularAuthors = [
@@ -90,61 +95,88 @@ function Authors() {
     fetchAuthors();
   }, []);
 
+  // Handle search
   useEffect(() => {
-    async function searchAuthors() {
-      // Check if search query is at least 2 characters
-      if (searchQuery.trim().length <= 3) {
-        setSearchResults([]);
-        return;
-      }
+    if (searchQuery.trim().length === 0) {
+      setSearchResults([]);
+      setNoResultsFound(false);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery.trim().length < 3) return;
 
       setLoading(true);
-
       try {
-        const response = await fetch(
+        // First try exact matches from existing authors
+        const fuse = new Fuse([...authors, ...popularAuthors], {
+          keys: ["name"],
+          threshold: 0.5,
+          includeScore: true,
+          minMatchCharLength: 1,
+          ignoreLocation: true,
+          shouldSort: true,
+          findAllMatches: true,
+          distance: 100,
+          useExtendedSearch: true,
+        });
+
+        const results = fuse.search(searchQuery, {
+          limit: 20,
+        });
+        
+        const matchedAuthors = results.map((result) => result.item);
+
+        if (matchedAuthors.length > 0) {
+          setSearchResults(matchedAuthors);
+          setNoResultsFound(false);
+          setLoading(false);
+          return;
+        }
+
+        // If no local matches, try API search
+        fetch(
           `https://www.googleapis.com/books/v1/volumes?q=inauthor:${encodeURIComponent(
             searchQuery
           )}&maxResults=20`
-        );
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            let apiResults = [];
+            data.items?.forEach((item) => {
+              const itemAuthors = item.volumeInfo?.authors;
+              const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
 
-        const data = await response.json();
-
-        let searchResults = [];
-
-        data.items?.forEach((item) => {
-          const itemAuthors = item.volumeInfo?.authors;
-          const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
-
-          if (itemAuthors) {
-            itemAuthors.forEach((authorName) => {
-              // Check if author is not already in search results
-              if (!searchResults.find((a) => a.name === authorName)) {
-                searchResults.push({
-                  name: authorName,
-                  image:
-                    authorImage || "https://placehold.co/200x300?text=No+Image",
+              if (itemAuthors) {
+                itemAuthors.forEach((authorName) => {
+                  if (!apiResults.find((a) => a.name === authorName)) {
+                    apiResults.push({
+                      name: authorName,
+                      image: authorImage || "https://placehold.co/200x300?text=No+Image",
+                    });
+                  }
                 });
               }
             });
-          }
-        });
 
-        setAuthors(searchResults);
+            if (apiResults.length > 0) {
+              setSearchResults(apiResults);
+              setNoResultsFound(false);
+            } else {
+              setNoResultsFound(true);
+            }
+          });
       } catch {
-        <AuthorNotFound />;
+        setNoResultsFound(true);
       } finally {
         setLoading(false);
       }
-    }
-    // Check if search query is at least 2 characters
-    if (searchQuery.trim().length > 2) {
-      const delayDebounceFn = setTimeout(() => {
-        searchAuthors();
-      }, 500); // 500ms delay
+    }, 500);
 
-      return () => clearTimeout(delayDebounceFn);
-    }
-  }, [searchQuery]);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, authors, popularAuthors]);
+
+  const displayedAuthors = searchQuery.trim().length > 0 ? searchResults : authors;
 
   return (
     <div>
@@ -170,13 +202,12 @@ function Authors() {
                   <Link
                     key={index}
                     to={`/author/${encodeURIComponent(author.name)}`}
-                    className="flex flex-col items-center bg-pink-200 p-4 rounded-lg shadow hover:bg-pink-300 text-center"
-                  >
+                    className="flex flex-col items-center bg-pink-200 p-4 rounded-lg shadow hover:bg-pink-300 text-center">
+
                     <img
                       src={author.image}
                       alt={author.name}
-                      className="w-24 h-24 object-cover rounded-full mb-2"
-                    />
+                      className="w-24 h-24 object-cover rounded-full mb-2"/>
 
                     <p className="font-medium">{author.name}</p>
                   </Link>
@@ -185,7 +216,7 @@ function Authors() {
             </div>
 
             <h2 className="text-2xl font-semibold text-violet-600 mb-6">
-              All Authors
+              {searchQuery.trim().length > 0 ? "Search Results" : "All Authors"}
             </h2>
 
             {/* Search bar */}
@@ -195,33 +226,33 @@ function Authors() {
                 placeholder="Search author..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 rounded-md border-2 border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
-              />
+                className="w-full px-4 py-2 rounded-md border-2 border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-600"/>
             </div>
 
             {/* Authors */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-              {(searchResults.length > 0 ? searchResults : authors).map(
-                (author, index) => (
+              {noResultsFound ? (
+                <div className="col-span-full flex justify-center items-center h-64">
+                  <AuthorNotFound />
+                </div>
+              ) : (
+                displayedAuthors.map((author, index) => (
                   <Link
                     key={index}
                     to={`/author/${encodeURIComponent(author.name)}`}
-                    className="flex flex-col items-center bg-violet-200 p-4 rounded-lg shadow hover:bg-violet-300 text-center"
-                  >
+                    className="flex flex-col items-center bg-violet-200 p-4 rounded-lg shadow hover:bg-violet-300 text-center">
                     {author.image ? (
-                      <img
-                        src={author.image}
-                        alt={author.name}
-                        className="w-24 h-24 object-cover rounded-full mb-2"
-                      />
+                      <img src={author.image} alt={author.name} className="w-24 h-24 object-cover rounded-full mb-2" />
                     ) : (
                       <div className="w-24 h-24 bg-violet-400 rounded-full flex items-center justify-center text-white mb-2">
                         ?
                       </div>
                     )}
-                    <p className="font-medium">{author.name}</p>
+                    <p className="font-medium">
+                      {author.name}
+                    </p>
                   </Link>
-                )
+                ))
               )}
             </div>
           </>
