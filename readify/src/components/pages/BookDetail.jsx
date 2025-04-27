@@ -33,7 +33,24 @@ function BookDetail() {
   // Function to change the state of the favorite button
   const toggleFavorite = () => {
     setFavorited(!favorited);
+
+    // Store or remove the book from localStorage
+    if (!favorited){
+      localStorage.setItem(`favorite_${id}`, JSON.stringify(book));
+    } else {
+      localStorage.removeItem(`favorite_${id}`);
+    }
   };
+
+    // Function to check if the book is favorited
+    useEffect(() => {
+      const storedFavorite = localStorage.getItem(`favorite_${id}`);
+      if (storedFavorite) {
+        setFavorited(true);
+      } else {
+        setFavorited(false);
+      }
+    }, [id]);
 
   // Function to handle sending feedback
   const handleFeedbackSend = () => {
