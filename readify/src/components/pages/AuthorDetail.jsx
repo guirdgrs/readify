@@ -5,6 +5,7 @@ import BookLoading from "../bookdetail/BookLoading";
 import BookCard from "../bookdetail/BookCard";
 import { motion } from "framer-motion";
 import { fadeSlideUp } from "../utils/motionConfig";
+import BookNotFound from "../authordetail/AuthorNotFound";
 
 function AuthorDetail() {
   const { authorName } = useParams();
@@ -12,6 +13,7 @@ function AuthorDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function fetchAuthorBooks() {
       try {
         const response = await fetch(
@@ -27,8 +29,8 @@ function AuthorDetail() {
             link: item.volumeInfo.infoLink,
           })) || []
         );
-      } catch (error) {
-        console.error("Error fetching author books:", error);
+      } catch {
+        <BookNotFound/>
       } finally {
         setLoading(false);
       }
@@ -58,7 +60,7 @@ function AuthorDetail() {
             ))}
           </div>
         ) : (
-          <p className="text-violet-600">No books found for this author.</p>
+          <BookNotFound/>
         )}
 
       </motion.div>
