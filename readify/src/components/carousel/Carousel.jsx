@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import '../../App.css';
 import Loading from "../utils/Loading.jsx";
 
-function BookCarousel({ genre = "fiction", delay = 0 }) {
+function BookCarousel({ genre = "", delay = 0 }) {
   // State to store the list of books
   const [books, setBooks] = useState([]);
 
@@ -14,6 +14,18 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
   const [loading, setLoading] = useState(true);
 
   const carouselRef = useRef(null); // Ref to the carousel container
+
+  const shuffleBooks = (array => {
+    return array.sort(() => Math.random() - 0.5);
+  })
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 500);
+  
+    return () => clearTimeout(timer);
+  }, []);
 
   // Effect to fetch books from the Google Books API based on the genre
   useEffect(() => {
@@ -46,7 +58,7 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
           })) || [];
 
         // Update the state with the formatted book data
-        setBooks(formattedBooks);
+        setBooks(shuffleBooks(formattedBooks));
       } catch {
         // Handle any errors that occur during the fetch
         console.error("Error");
