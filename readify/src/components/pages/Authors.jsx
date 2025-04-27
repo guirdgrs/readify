@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import AuthorNotFound from "../authordetail/AuthorNotFound";
 import { fadeSlideUp } from "../utils/motionConfig";
 import Navbar from "../navbar/Navbar";
-import BookLoading from "../bookdetail/BookLoading";
+import Loading from "../utils/Loading";
 
 function Authors() {
   // State for authors
@@ -17,20 +17,38 @@ function Authors() {
   const [loading, setLoading] = useState(true);
 
   // State for search authors
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [searchResults, setSearchResults] = useState([]);
 
   // Predefined popular authors
   const predefinedPopularAuthors = [
-    { name: "J.K. Rowling", image: "https://placehold.co/200x300?text=Rowling" },
+    {
+      name: "J.K. Rowling",
+      image: "https://placehold.co/200x300?text=Rowling",
+    },
     { name: "Stephen King", image: "https://placehold.co/200x300?text=King" },
-    { name: "Agatha Christie", image: "https://placehold.co/200x300?text=Christie" },
-    { name: "George R.R. Martin", image: "https://placehold.co/200x300?text=Martin" },
-    { name: "J.R.R. Tolkien", image: "https://placehold.co/200x300?text=Tolkien" },
+    {
+      name: "Agatha Christie",
+      image: "https://placehold.co/200x300?text=Christie",
+    },
+    {
+      name: "George R.R. Martin",
+      image: "https://placehold.co/200x300?text=Martin",
+    },
+    {
+      name: "J.R.R. Tolkien",
+      image: "https://placehold.co/200x300?text=Tolkien",
+    },
     { name: "Dan Brown", image: "https://placehold.co/200x300?text=Brown" },
-    { name: "Suzanne Collins", image: "https://placehold.co/200x300?text=Collins" },
-    { name: "Rick Riordan", image: "https://placehold.co/200x300?text=Riordan" },
+    {
+      name: "Suzanne Collins",
+      image: "https://placehold.co/200x300?text=Collins",
+    },
+    {
+      name: "Rick Riordan",
+      image: "https://placehold.co/200x300?text=Riordan",
+    },
   ];
 
   useEffect(() => {
@@ -52,19 +70,19 @@ function Authors() {
           if (authorName && !authorsData.find((a) => a.name === authorName)) {
             authorsData.push({
               name: authorName,
-              image: authorImage || "https://placehold.co/200x300?text=No+Image",
+              image:
+                authorImage || "https://placehold.co/200x300?text=No+Image",
             });
           }
         });
 
         // Shuffle authors
-        authorsData = authorsData.sort(() => 0.5 - Math.random())
+        authorsData = authorsData.sort(() => 0.5 - Math.random());
 
         setAuthors(authorsData);
         setPopularAuthors(predefinedPopularAuthors);
-
       } catch {
-        <AuthorNotFound />
+        <AuthorNotFound />;
       } finally {
         setLoading(false);
       }
@@ -72,77 +90,74 @@ function Authors() {
     fetchAuthors();
   }, []);
 
+  useEffect(() => {
+    async function searchAuthors() {
+      // Check if search query is at least 2 characters
+      if (searchQuery.trim().length <= 3) {
+        setSearchResults([]);
+        return;
+      }
 
-    useEffect(() => {
-        async function searchAuthors() {
-            // Check if search query is at least 2 characters
-            if(searchQuery.trim().length <= 3){
-                setSearchResults([]);
-                return;
-            }
+      setLoading(true);
 
-            setLoading(true);
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes?q=inauthor:${encodeURIComponent(
+            searchQuery
+          )}&maxResults=20`
+        );
 
-            try{
-                const response = await fetch(
-                    `https://www.googleapis.com/books/v1/volumes?q=inauthor:${encodeURIComponent(searchQuery)}&maxResults=20`
-                );
-                
-                const data = await response.json();
+        const data = await response.json();
 
-                let searchResults = [];
+        let searchResults = [];
 
-                data.items?.forEach((item) => {
-                    const itemAuthors = item.volumeInfo?.authors;
-                    const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
+        data.items?.forEach((item) => {
+          const itemAuthors = item.volumeInfo?.authors;
+          const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
 
-                    if(itemAuthors){
-                        itemAuthors.forEach((authorName) => {
-                        // Check if author is not already in search results
-                        if (!searchResults.find((a) => a.name === authorName)) {
-                                searchResults.push({
-                                    name: authorName,
-                                    image: authorImage || "https://placehold.co/200x300?text=No+Image"
-                            });
-                        }
-                    });
-                  }
+          if (itemAuthors) {
+            itemAuthors.forEach((authorName) => {
+              // Check if author is not already in search results
+              if (!searchResults.find((a) => a.name === authorName)) {
+                searchResults.push({
+                  name: authorName,
+                  image:
+                    authorImage || "https://placehold.co/200x300?text=No+Image",
                 });
+              }
+            });
+          }
+        });
 
-                setAuthors(searchResults);
+        setAuthors(searchResults);
+      } catch {
+        <AuthorNotFound />;
+      } finally {
+        setLoading(false);
+      }
+    }
+    // Check if search query is at least 2 characters
+    if (searchQuery.trim().length > 2) {
+      const delayDebounceFn = setTimeout(() => {
+        searchAuthors();
+      }, 500); // 500ms delay
 
-            } catch {
-                <AuthorNotFound />
-            } finally {
-                setLoading(false);
-            }
-        }
-            // Check if search query is at least 2 characters
-            if(searchQuery.trim().length > 2) {
-                const delayDebounceFn = setTimeout(() => {
-                    searchAuthors();
-                }, 500); // 500ms delay
-
-                return () => clearTimeout(delayDebounceFn);
-            }
-
-        }, [searchQuery]);
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [searchQuery]);
 
   return (
     <div>
-        <Navbar />
+      <Navbar />
 
-        <motion.div
-        className="max-w-7xl mx-auto p-6"
-        {...fadeSlideUp}>
-
-            <h1 className="text-4xl font-bold text-violet-700 mb-8 text-center">
-                Authors
-            </h1>
+      <motion.div className="max-w-7xl mx-auto p-6" {...fadeSlideUp}>
+        <h1 className="text-4xl font-bold text-violet-700 mb-8 text-center">
+          Authors
+        </h1>
 
         {/* Popular authors section */}
         {loading ? (
-          <BookLoading />
+          <Loading />
         ) : authors.length > 0 ? (
           <>
             <div className="mb-12">
@@ -151,16 +166,17 @@ function Authors() {
               </h2>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-              {popularAuthors.map((author, index) => (
+                {popularAuthors.map((author, index) => (
                   <Link
                     key={index}
                     to={`/author/${encodeURIComponent(author.name)}`}
-                    className="flex flex-col items-center bg-pink-200 p-4 rounded-lg shadow hover:bg-pink-300 text-center">
-                        
+                    className="flex flex-col items-center bg-pink-200 p-4 rounded-lg shadow hover:bg-pink-300 text-center"
+                  >
                     <img
                       src={author.image}
                       alt={author.name}
-                      className="w-24 h-24 object-cover rounded-full mb-2"/>
+                      className="w-24 h-24 object-cover rounded-full mb-2"
+                    />
 
                     <p className="font-medium">{author.name}</p>
                   </Link>
@@ -179,39 +195,40 @@ function Authors() {
                 placeholder="Search author..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 rounded-md border-2 border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-600"/>
+                className="w-full px-4 py-2 rounded-md border-2 border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
+              />
             </div>
 
             {/* Authors */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                {(searchResults.length > 0 ? searchResults : authors).map(
-                    (author, index) => (
-                <Link
-                  key={index}
-                  to={`/author/${encodeURIComponent(author.name)}`}
-                  className="flex flex-col items-center bg-violet-200 p-4 rounded-lg shadow hover:bg-violet-300 text-center">
-                    
-                  {author.image ? (
-                    <img
-                      src={author.image}
-                      alt={author.name}
-                      className="w-24 h-24 object-cover rounded-full mb-2"/>
-
-                  ) : (
-                    <div className="w-24 h-24 bg-violet-400 rounded-full flex items-center justify-center text-white mb-2">
-                      ?
-                    </div>
-                  )}
-                  <p className="font-medium">{author.name}</p>
-                </Link>
-              ))}
+              {(searchResults.length > 0 ? searchResults : authors).map(
+                (author, index) => (
+                  <Link
+                    key={index}
+                    to={`/author/${encodeURIComponent(author.name)}`}
+                    className="flex flex-col items-center bg-violet-200 p-4 rounded-lg shadow hover:bg-violet-300 text-center"
+                  >
+                    {author.image ? (
+                      <img
+                        src={author.image}
+                        alt={author.name}
+                        className="w-24 h-24 object-cover rounded-full mb-2"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 bg-violet-400 rounded-full flex items-center justify-center text-white mb-2">
+                        ?
+                      </div>
+                    )}
+                    <p className="font-medium">{author.name}</p>
+                  </Link>
+                )
+              )}
             </div>
           </>
         ) : (
           <AuthorNotFound />
         )}
-
-        </motion.div>
+      </motion.div>
     </div>
   );
 }

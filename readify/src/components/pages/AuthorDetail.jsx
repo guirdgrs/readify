@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-import BookLoading from "../bookdetail/BookLoading";
+import Loading from "../utils/Loading";
 import BookCard from "../bookdetail/BookCard";
 import { motion } from "framer-motion";
 import { fadeSlideUp } from "../utils/motionConfig";
@@ -17,7 +17,9 @@ function AuthorDetail() {
     async function fetchAuthorBooks() {
       try {
         const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=inauthor:"${decodeURIComponent(authorName)}"&maxResults=20&langRestrict=en`
+          `https://www.googleapis.com/books/v1/volumes?q=inauthor:"${decodeURIComponent(
+            authorName
+          )}"&maxResults=20&langRestrict=en`
         );
         const data = await response.json();
         setBooks(
@@ -25,12 +27,14 @@ function AuthorDetail() {
             id: item.id,
             title: item.volumeInfo.title,
             authors: item.volumeInfo.authors,
-            image: item.volumeInfo.imageLinks?.thumbnail || "https://placehold.co/200x300?text=No+Image",
+            image:
+              item.volumeInfo.imageLinks?.thumbnail ||
+              "https://placehold.co/200x300?text=No+Image",
             link: item.volumeInfo.infoLink,
           })) || []
         );
       } catch {
-        <BookNotFound/>
+        <BookNotFound />;
       } finally {
         setLoading(false);
       }
@@ -44,15 +48,15 @@ function AuthorDetail() {
       <Navbar />
       <motion.div
         {...fadeSlideUp}
-        className="max-w-6xl mx-auto p-6 mt-10 text-center">
-
+        className="max-w-6xl mx-auto p-6 mt-10 text-center"
+      >
         <h1 className="text-3xl font-bold mb-6 text-violet-700">
           Books by {decodeURIComponent(authorName)}
         </h1>
 
         {/* Display books */}
         {loading ? (
-          <BookLoading />
+          <Loading />
         ) : books.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {books.map((book) => (
@@ -60,9 +64,8 @@ function AuthorDetail() {
             ))}
           </div>
         ) : (
-          <BookNotFound/>
+          <BookNotFound />
         )}
-
       </motion.div>
     </div>
   );

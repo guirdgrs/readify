@@ -4,7 +4,7 @@ import { Book, ChevronLeft, ChevronRight } from "lucide-react";
 import { hoverSpring, hoverSpring2, fadeSlide, fadeSlideUp, showCarousel} from "../utils/motionConfig.js";
 import { Link } from "react-router-dom";
 import '../../App.css';
-import BookLoading from "../bookdetail/BookLoading.jsx";
+import Loading from "../utils/Loading.jsx";
 
 function BookCarousel({ genre = "fiction", delay = 0 }) {
   // State to store the list of books
@@ -100,7 +100,7 @@ function BookCarousel({ genre = "fiction", delay = 0 }) {
     <AnimatePresence>
       {/* The loading state is used to conditionally render the loading animation or the carousel content */}
       {loading ? (
-        <BookLoading /> // Show loading animation while fetching books
+        <Loading /> // Show loading animation while fetching books
       ) : books && books.length > 0 ? (
 
         // If books are available, render the carousel

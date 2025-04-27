@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { fadeSlideUp, hoverSpring, hoverSpring2, showCarousel } from "../utils/motionConfig.js";
 import Navbar from "../navbar/Navbar.jsx";
-import BookLoading from "../bookdetail/BookLoading.jsx";
+import Loading from "../utils/Loading.jsx";
 import BookNotFound from "../bookdetail/BookNotFound.jsx";
 import BookCard from "../bookdetail/BookCard.jsx";
 import { Book, MessageCircleMore, Star } from "lucide-react";
@@ -119,7 +119,7 @@ function BookDetail() {
     // Dependency array to re-fetch book details when the ID changes
   }, [id]);
 
-  if(loading || !book) return <BookLoading />; // Show loading state if the book is still being fetched or if the book is not found
+  if(loading || !book) return <Loading />; // Show loading state if the book is still being fetched or if the book is not found
 
   // Function to fetch books by author
   async function fetchBooksByAuthor(author, bookId) {
@@ -193,7 +193,7 @@ function BookDetail() {
 
   // Render loading state or error message if applicable
   if (loading) {
-    return <BookLoading />;
+    return <Loading />;
   }
   // Render the book details if the book is found
   // If the book is not found, display an error message
@@ -312,7 +312,7 @@ function BookDetail() {
           {/* Related books */}
           {loadingRelated ? ( 
             <div className="flex justify-center">
-              <BookLoading />
+              <Loading />
             </div>
           // If there are books by the same author, display them in a grid layout
           ) : sameAuthorBooks.length > 0 ? (
@@ -350,7 +350,7 @@ function BookDetail() {
           
           {loadingRelated ? (
             <div className="flex justify-center">
-              <BookLoading />
+              <Loading />
             </div>
           // If there are books in the same genre, display them in a grid layout
           ) : sameGenreBooks.length > 0 ? (
