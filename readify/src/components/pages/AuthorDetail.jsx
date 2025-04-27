@@ -48,6 +48,7 @@ function AuthorDetail() {
           Books by {decodeURIComponent(authorName)}
         </h1>
 
+        {/* Display books */}
         {loading ? (
           <BookLoading />
         ) : books.length > 0 ? (
@@ -59,6 +60,7 @@ function AuthorDetail() {
         ) : (
           <p className="text-violet-600">No books found for this author.</p>
         )}
+
       </motion.div>
     </div>
   );

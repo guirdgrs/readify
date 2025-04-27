@@ -3,6 +3,7 @@ import Home from './components/pages/Home.jsx';
 import BookDetail from './components/pages/BookDetail.jsx';
 import FaviconManager from './components/utils/FavIconManager.jsx';
 import AuthorDetail from './components/pages/AuthorDetail.jsx';
+import Authors from './components/pages/Authors.jsx';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/* The BookDetail component will use this ID to fetch and display the details of the specific book */}
         {/* The path "/auhor/:authorName" renders the AuthorDetail component */}
         <Route path="/author/:authorName" element={<AuthorDetail />} />
+        <Route path="/authors" element={<Authors />} />
       </Routes>
     </Router>
   );

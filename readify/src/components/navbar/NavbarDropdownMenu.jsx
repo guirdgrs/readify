@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import NavbarItem from "./NavbarItem";
 import { fadeSlide } from "../utils/motionConfig";
 import { Book } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function NavbarDropdownMenu({ dropdownRef, onClose }) {
   return (
@@ -14,11 +15,25 @@ function NavbarDropdownMenu({ dropdownRef, onClose }) {
         <Book size={30} />  
       </div>
 
-      <NavbarItem label="Most popular" href="#most-popular" onClick={onClose} />
-      <NavbarItem label="Authors" href="#authors" onClick={onClose} />
-      <NavbarItem label="Genre" href="#genre" onClick={onClose} />
-      <NavbarItem label="Favorites" href="#favorites" onClick={onClose} />
-      <NavbarItem label="About" href="#about" onClick={onClose} />
+      <Link to="/most-popular" onClick={onClose}>
+        <NavbarItem label="Most popular"/>
+      </Link>
+
+      <Link to="/authors" onClick={onClose}>
+        <NavbarItem label="Authors"/>
+      </Link>
+
+      <Link to="/genres" onClick={onClose}>
+        <NavbarItem label="Genre"/>
+      </Link>
+
+      <Link to="/favorites" onClick={onClose}>
+        <NavbarItem label="Favorites"/>
+      </Link>
+
+      <Link to="/about" onClick={onClose}>
+        <NavbarItem label="About"/>
+      </Link>
       
     </motion.div>
   );
