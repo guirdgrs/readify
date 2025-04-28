@@ -58,7 +58,7 @@ function Navbar() {
 
   return (
     <motion.nav
-      className="bg-violet-500 shadow-md px-6 py-4 flex justify-between top-0 z-50 relative"
+      className="bg-violet-500 shadow-md px-6 py-4 flex justify-between fixed top-0 left-0 right-0 z-50"
       {...fadeSlide}>
 
       <div className="text-pink-300 flex items-center gap-4">

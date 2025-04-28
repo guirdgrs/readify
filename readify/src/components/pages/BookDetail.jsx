@@ -223,7 +223,7 @@ function BookDetail() {
         <Navbar />
 
         <motion.div
-        className="max-w-4xl mx-auto mt-10 p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative"
+        className="max-w-4xl mx-auto p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative mt-20"
         {...fadeSlideUp}>
 
         <div className="flex flex-col md:flex-row gap-6 items-center">
