@@ -6,6 +6,7 @@ import BookCard from "../bookdetail/BookCard";
 import { motion } from "framer-motion";
 import { fadeSlideUp } from "../utils/motionConfig";
 import BookNotFound from "../authordetail/AuthorNotFound";
+import BackButton from "../utils/BackButton";
 
 function AuthorDetail() {
   const { authorName } = useParams();
@@ -46,9 +47,10 @@ function AuthorDetail() {
   return (
     <div>
       <Navbar />
+      <BackButton />
       <motion.div
         {...fadeSlideUp}
-        className="max-w-6xl mx-auto p-6 mt-10 text-center"
+        className="max-w-6xl mx-auto p-6 mt-20 text-center"
       >
         <h1 className="text-3xl font-bold mb-6 text-violet-700">
           Books by {decodeURIComponent(authorName)}

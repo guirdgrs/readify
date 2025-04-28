@@ -6,6 +6,7 @@ import { fadeSlideUp } from "../utils/motionConfig";
 import Navbar from "../navbar/Navbar";
 import Loading from "../utils/Loading";
 import Fuse from "fuse.js";
+import BackButton from "../utils/BackButton";
 
 function Authors() {
   // State for authors
@@ -181,7 +182,7 @@ function Authors() {
   return (
     <div>
       <Navbar />
-
+      <BackButton />
       <motion.div className="max-w-7xl mx-auto p-6 mt-20" {...fadeSlideUp}>
         <h1 className="text-4xl font-bold text-violet-700 mb-8 text-center">
           Authors

@@ -12,6 +12,7 @@ import FeedbackSection from "../bookdetail/FeedbackSection.jsx";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 import { Link } from "react-router-dom";
+import BackButton from "../utils/BackButton.jsx";
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -221,7 +222,7 @@ function BookDetail() {
   return (
     <div>
         <Navbar />
-
+        <BackButton />
         <motion.div
         className="max-w-4xl mx-auto p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative mt-20"
         {...fadeSlideUp}>
