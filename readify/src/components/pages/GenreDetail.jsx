@@ -16,6 +16,7 @@ function GenreDetail() {
 
   useEffect(() => {
     async function fetchBooksByGenre() {
+      
       try {
         const response = await fetch(
           `https://www.googleapis.com/books/v1/volumes?q=subject:${genre}&maxResults=40`
