@@ -23,6 +23,7 @@ function Navbar() {
 
   // Function to toggle the dropdown menu
   const toggleDropdown = () => {
+    // Toggle the dropdown menu by setting its state
     setDropdownOpen(!dropdownOpen);
   };
 
