@@ -9,8 +9,10 @@ function NavbarDropdownLogin({ loginRef, onClose }) {
       className="absolute top-20 right-6 bg-violet-300 rounded-md p-4 px-8 w-64 flex flex-col gap-4 z-50"
       {...fadeSlide}>
 
-      <div className="flex justify-center text-violet-600">
-        <User size={30} />
+      <div 
+      className="flex justify-center text-violet-600">
+        <User 
+        size={30}/>
       </div>
 
       <motion.input

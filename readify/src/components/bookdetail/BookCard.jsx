@@ -10,8 +10,10 @@ function BookCard({ book }) {
   // Function to handle click event on the book card
   // It checks if the current path ends with the book ID, if not, it navigates to the book detail page
   const handleClick = () => {
+
     if(!location.pathname.endsWith(book.id)){
       navigate(`/book/${book.id}`);
+      
     } else {
       navigate(`/book/${book.id}`, { replace: true });
     }
@@ -29,7 +31,12 @@ function BookCard({ book }) {
           className="mt-5"/>
 
         <div className="p-3 text-center">
-          <h3 className="font-semibold text-sm line-clamp-3">{book.title}</h3>  
+
+          <h3 
+          className="font-semibold text-sm line-clamp-3">
+            {book.title}
+          </h3>  
+
         </div>
 
     </motion.div>

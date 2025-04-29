@@ -5,6 +5,7 @@ import { hoverSpring, hoverSpring2, fadeSlide, fadeSlideUp, showCarousel} from "
 import { Link } from "react-router-dom";
 import '../../App.css';
 import Loading from "../utils/Loading.jsx";
+import BookNotFound from "../authordetail/AuthorNotFound.jsx";
 
 function BookCarousel({ genre = "", delay = 0 }) {
   // State to store the list of books
@@ -59,9 +60,10 @@ function BookCarousel({ genre = "", delay = 0 }) {
 
         // Update the state with the formatted book data
         setBooks(shuffleBooks(formattedBooks));
+
       } catch {
         // Handle any errors that occur during the fetch
-        console.error("Error");
+        <BookNotFound/>
       } finally {
         setLoading(false); // Set loading to false after the fetch is complete
       }
@@ -77,9 +79,11 @@ function BookCarousel({ genre = "", delay = 0 }) {
   //Effect to set up an interval for automatic scrolling
   useEffect(() => {
     if(!loading && carouselRef.current) {
+
         const interval = setInterval(() => {
             scroll("right");
-        }, 5000); // Change the interval time as needed (5000ms = 5 seconds)
+        }, 5000);
+         // Change the interval time as needed (5000ms = 5 seconds)
         return () => clearInterval(interval); // Cleanup the interval on component unmount
      }
     }, [loading]); // This effect sets up an interval to automatically scroll the carousel every 5 seconds
@@ -89,6 +93,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
     // Get the carousel container element by its ID
     // The ID is dynamically generated based on the genre prop passed to the component
     const container = carouselRef.current;
+
     if (container) {
       // Calculate the scroll amount based on the direction
       const scrollAmount = 300;
@@ -121,13 +126,17 @@ function BookCarousel({ genre = "", delay = 0 }) {
         {...fadeSlideUp}>
 
         {/* Genre */}
-        <h2 className="text-2xl font-bold text-violet-700 mb-4 capitalize text-center">
+        <h2 
+        className="text-2xl font-bold text-violet-700 mb-4 capitalize text-center">
             {genre}
-            <hr className="mt-5" />
+
+            <hr 
+            className="mt-5" />
         </h2>
 
         {/* Carousel content */}
-        <div className="flex items-center gap-2">
+        <div 
+        className="flex items-center gap-2">
 
             {/* Left scroll button */}
             <button
@@ -147,7 +156,10 @@ function BookCarousel({ genre = "", delay = 0 }) {
                 // Each book item is wrapped in a motion.div for animation
                 // The Link component is used to navigate to the book detail page
                 // The key prop is used to uniquely identify each book item
-                <Link to={`/book/${book.id}`} key={book.id}>
+                <Link 
+                to={`/book/${book.id}`} 
+                key={book.id}>
+
                   <motion.div
                   className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
                   {...hoverSpring2}
@@ -161,9 +173,11 @@ function BookCarousel({ genre = "", delay = 0 }) {
                         {...fadeSlide}/>
 
                     {/* Title */}
-                    <p className="text-md text-violet-800 font-medium line-clamp-3">
+                    <p 
+                    className="text-md text-violet-800 font-medium line-clamp-3">
                         {book.title}
                     </p>
+
                   </motion.div>
                 </Link>
             ))}  {/* Book item ends here */}
@@ -175,13 +189,17 @@ function BookCarousel({ genre = "", delay = 0 }) {
                 className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
                     <ChevronRight />
                 </button>
+
         </div> {/* Carousel content ends here */}
         </motion.div>
           ) : (
           <div 
           className="text-center text-violet-700 py-6">
+
             <p 
-            className="text-lg">😓 Sorry! An error occurred</p>
+            className="text-lg">😓 
+              <BookNotFound/>
+            </p>
           </div>
           )}
     </AnimatePresence >

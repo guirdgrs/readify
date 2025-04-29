@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 import { Link } from "react-router-dom";
 import BackButton from "../utils/BackButton.jsx";
+import AuthorNotFound from "../authordetail/AuthorNotFound.jsx";
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -45,7 +46,9 @@ function BookDetail() {
 
     // Function to check if the book is favorited
     useEffect(() => {
+
       const storedFavorite = localStorage.getItem(`favorite_${id}`);
+
       if (storedFavorite) {
         setFavorited(true);
       } else {
@@ -125,7 +128,7 @@ function BookDetail() {
         }
 
       } catch {
-        alert("Error fetching book details. Please try again later.");
+        <BookNotFound />;
       } finally {
         // Set loading to false after the fetch is complete, regardless of success or failure
         // This ensures that the loading state is updated correctly in both cases
@@ -137,11 +140,15 @@ function BookDetail() {
     // Dependency array to re-fetch book details when the ID changes
   }, [id]);
 
-  if(loading || !book) return <Loading />; // Show loading state if the book is still being fetched or if the book is not found
+  if(loading || !book){
+    return <Loading />;
+  } // Show loading state if the book is still being fetched or if the book is not found
 
   // Function to fetch books by author
   async function fetchBooksByAuthor(author, bookId) {
+
     try{
+
       const response = await fetch(
         // Google Books API endpoint to search for books by the same author
         `https://www.googleapis.com/books/v1/volumes?q=inauthor:"
@@ -163,8 +170,9 @@ function BookDetail() {
         : []; // If no items are found, set books to an empty array
 
         setSameAuthorBooks(books); // Update the state with the filtered books
-    }catch(error){
-      console.error("Error fetching books by author:", error);
+
+    }catch{
+      <AuthorNotFound />;
     } finally{
       setLoadingRelated(false); // Set loading state to false after fetching books by author
     }
@@ -192,8 +200,8 @@ function BookDetail() {
           : [];
   
           setSameGenreBooks(books);
-      }catch(error){
-        console.error("Error fetching books by category:", error);
+      }catch{
+        <BookNotFound />
       } finally{
         setLoadingRelated(false);
       }
@@ -227,8 +235,11 @@ function BookDetail() {
         className="max-w-4xl mx-auto p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative mt-20"
         {...fadeSlideUp}>
 
-        <div className="flex flex-col md:flex-row gap-6 items-center">
-          <div className="flex flex-col items-center">
+        <div 
+        className="flex flex-col md:flex-row gap-6 items-center">
+          <div 
+          className="flex flex-col items-center">
+            
             <a 
             href={book.link}
             target="_blank"
@@ -242,19 +253,21 @@ function BookDetail() {
             </a>
 
               {/* Button div */}
-              <div className="flex gap-4 mt-4">
+              <div 
+              className="flex gap-4 mt-4">
+
                 <motion.button
                 // Call the function
                 onClick={() => {
-                  toggleFavorite();
-                }}
+                  toggleFavorite();}}
                 {...hoverSpring2}
                 whiletap={{scale: 1.3}}
                 animate={{backgroundColor: favorited ? "#facc15" : "#7c3aed"}}
                 transition={{type: "spring", stiffness: 300}}
                 className="px-4 py-2 rounded-lg shadow-md cursor-pointer text-white bg-violet-500">
 
-                  {favorited ? <Star className="text-white" fill={favorited ? "#ffffff" : "none"}/> : <Star/>}
+                  {favorited ? <Star className="text-white" 
+                  fill={favorited ? "#ffffff" : "none"}/> : <Star/>}
                 </motion.button>  
 
                 <motion.button
@@ -263,41 +276,52 @@ function BookDetail() {
                 className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-violet-600 cursor-pointer">
                   <MessageCircleMore/>
                 </motion.button>
+
               </div>
             </div>
             
             {/* Book details div */}
-            <div className="flex-1 text-center">
+            <div 
+            className="flex-1 text-center">
+
             <motion.h1
-                className="text-3xl font-bold mb-2 text-violet-700">
+            className="text-3xl font-bold mb-2 text-violet-700">
                 {book.title}
             </motion.h1>
+
                 {/* Author */}
                 {book.authors && (
-                    <p className="text-md font-medium mb-4">
+                    <p 
+                    className="text-md font-medium mb-4">
+                    {/* Checks if there are more than one author */}
+                    {/* If there are more than one author, add a comma */}
                     Author{book.authors.length > 1 ? "s" : ""}:{" "}
                     {book.authors.map((author, index) => (
-                      <span key={index}>
+                      <span 
+                      key={index}>
+
                         <Link
                           to={`/author/${encodeURIComponent(author)}`}
                           className="text-violet-700 hover:text-violet-900">
                           {author}
                         </Link>
+
                           {index < book.authors.length - 1 ? ", " : ""}
                       </span>
                     ))}
                   </p>
                 )}
 
-                <hr/>
-
-                <h3 className="text-lg font-semibold mb-2 text-violet-700 mt-3">
+                <h3 
+                className="text-lg font-semibold mb-2 text-violet-700 mt-3">
                     Description
                 </h3>
 
-              <p className="text-sm leading-relaxed">
+              <p 
+              className="text-sm leading-relaxed">
                   {book.description}
               </p>
+
             </div>
           </div>
         </motion.div>
@@ -323,26 +347,36 @@ function BookDetail() {
             transition: { duration: 0.6, ease: "easeOut" }},
           }}>
 
-          <h2 className="text-2xl font-bold mb-6 text-violet-700">
+          <h2 
+          className="text-2xl font-bold mb-6 text-violet-700">
             More by {book.authors[0]}
           </h2>
           
           {/* Related books */}
           {loadingRelated ? ( 
-            <div className="flex justify-center">
+            <div 
+            className="flex justify-center">
               <Loading />
             </div>
           // If there are books by the same author, display them in a grid layout
           ) : sameAuthorBooks.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div 
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {sameAuthorBooks.map((book) => (
-                <BookCard key={book.id} book={book} />
+                <BookCard 
+                key={book.id} 
+                book={book}/>
               ))}
             </div>
           ) : (
-            <p className="text-violet-600">No other books by this author found.</p>
+            <p 
+            className="text-violet-600">
+              No other books by this author found.
+            </p>
           )}
-          <hr className="mt-20 text-violet-600 border rounded-md"/>
+          <hr 
+          className="mt-20 text-violet-600 border rounded-md"/>
+
         </motion.div>
       )}
 
@@ -362,23 +396,30 @@ function BookDetail() {
 
           {/* The first category is used for filtering similar books */}
           {/* If there are multiple categories, only the first one is displayed */}
-          <h2 className="text-2xl font-bold mb-6 text-violet-700">
+          <h2 
+          className="text-2xl font-bold mb-6 text-violet-700">
             Similar books in {book.categories[0]}
           </h2>
           
           {loadingRelated ? (
-            <div className="flex justify-center">
+            <div 
+            className="flex justify-center">
               <Loading />
             </div>
           // If there are books in the same genre, display them in a grid layout
           ) : sameGenreBooks.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div 
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {sameGenreBooks.map((book) => (
-                <BookCard key={book.id} book={book} />
+                <BookCard 
+                key={book.id} 
+                book={book}/>
               ))}
             </div>
           ) : (
-            <p className="text-violet-600">No similar books in this category found.</p>
+            <p className="text-violet-600">
+              No similar books in this category found.
+            </p>
           )}
 
         </motion.div>

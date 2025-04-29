@@ -16,13 +16,16 @@ function AuthorDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
     async function fetchAuthorBooks() {
+
       try {
         const response = await fetch(
           `https://www.googleapis.com/books/v1/volumes?q=inauthor:"${decodeURIComponent(
             authorName
           )}"&maxResults=20&langRestrict=en`
         );
+
         const data = await response.json();
+
         setBooks(
           data.items?.map((item) => ({
             id: item.id,
@@ -34,6 +37,7 @@ function AuthorDetail() {
             link: item.volumeInfo.infoLink,
           })) || []
         );
+
       } catch {
         <BookNotFound />;
       } finally {
@@ -46,13 +50,16 @@ function AuthorDetail() {
 
   return (
     <div>
+
       <Navbar />
       <BackButton />
+
       <motion.div
         {...fadeSlideUp}
-        className="max-w-6xl mx-auto p-6 mt-20 text-center"
-      >
-        <h1 className="text-3xl font-bold mb-6 text-violet-700">
+        className="max-w-6xl mx-auto p-6 mt-20 text-center">
+
+        <h1 
+        className="text-3xl font-bold mb-6 text-violet-700">
           Books by {decodeURIComponent(authorName)}
         </h1>
 
@@ -60,9 +67,12 @@ function AuthorDetail() {
         {loading ? (
           <Loading />
         ) : books.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div 
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {books.map((book) => (
-              <BookCard key={book.id} book={book} />
+              <BookCard 
+              key={book.id}
+              book={book}/>
             ))}
           </div>
         ) : (

@@ -8,7 +8,9 @@ function FeedbackSection({onClose, onSend}) {
 
     // Function to manage the feedback send
     const handleSend = () => {
+
         const textarea = document.getElementById("feedback-send");
+
         if(!textarea.value.trim()) {
             withReactContent(Swal).fire({
             title: "Empty feedback",
@@ -16,7 +18,7 @@ function FeedbackSection({onClose, onSend}) {
             icon: "error",
             confirmButtonColor: "#7c3aed",
             });
-            return;
+                return;
             }
             onSend();
         };
@@ -25,8 +27,10 @@ function FeedbackSection({onClose, onSend}) {
         <motion.div
         {...fadeSlideUp}
         className="mt-8 p-6 bg-violet-200 rounded-xl shadow-inner text-violet-800 max-w-4xl mx-auto">
+
             <div 
             className="flex justify-between items-center mb-4">
+                
                 <h2 
                 className="text-2xl font-bold">
                     Feedback
@@ -48,14 +52,14 @@ function FeedbackSection({onClose, onSend}) {
                 rows="5">
                 </textarea>
 
-            <div className="flex justify-end mt-4">
+            <div 
+            className="flex justify-end mt-4">
                 <button 
                 className="bg-violet-500 text-white px-6 py-2 rounded-md hover:bg-violet-600 cursor-pointer"
                 onClick={handleSend}>
                     Send Feedback
                 </button>
             </div>
-
         </motion.div>
     )
 

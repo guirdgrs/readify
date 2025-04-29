@@ -34,6 +34,7 @@ function Navbar() {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
+
         buttonRef.current &&
         !buttonRef.current.contains(event.target)
       ) {
@@ -45,6 +46,7 @@ function Navbar() {
       if (
         loginRef.current &&
         !loginRef.current.contains(event.target) &&
+        
         loginButtonRef.current &&
         !loginButtonRef.current.contains(event.target)
       ) {
@@ -62,14 +64,19 @@ function Navbar() {
       className="bg-violet-500 shadow-md px-6 py-4 flex justify-between fixed top-0 left-0 right-0 z-50"
       {...fadeSlide}>
 
-      <div className="text-pink-300 flex items-center gap-4">
+      <div 
+      className="text-pink-300 flex items-center gap-4">
         {/* Logo */}
-        <Link to ="/">
+        <Link 
+        to ="/">
+
         <motion.div
           className="hover:text-pink-400 cursor-pointer"
           {...hoverSpring}>
 
-          <BookOpenText size={40} />
+          <BookOpenText 
+          size={40}/>
+
         </motion.div>
         </Link>
 
@@ -77,30 +84,40 @@ function Navbar() {
         <motion.button
           ref={buttonRef}
           onClick={toggleDropdown}
-          className="hover:text-pink-400"
+          className="hover:text-pink-400 cursor-pointer"
           {...hoverSpring}>
-          <AlignJustify />
+            <AlignJustify />
         </motion.button>
+
       </div>
 
-      <div className="flex items-center gap-4 text-center mr-7">
+      <div 
+      className="flex items-center gap-4 text-center mr-7">
         {/* Title */}
-        <Link to="/">
-        <motion.p className="text-bold text-3xl text-pink-300 select-none font-black">
+        <Link 
+        to="/">
+
+        <motion.p 
+        className="text-bold text-3xl text-pink-300 select-none font-black">
           Readify
         </motion.p>
+
         </Link>
       </div>
 
       {/* Your profile button */}
-      <div className="hidden md:flex space-x-6 items-center">
+      <div 
+      className="hidden md:flex space-x-6 items-center">
+
         <motion.button
           ref={loginButtonRef}
           onClick={() => setDropdownLogin((prev) => !prev)}
           className="text-pink-300 hover:text-pink-400 border-2 rounded-md py-2 px-2"
           {...hoverSpring}>
-          <User size={20} />
+            <User 
+            size={20}/>
         </motion.button>
+        
       </div>
 
       {/* Animated dropown menu */}
