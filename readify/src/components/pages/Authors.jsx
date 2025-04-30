@@ -69,7 +69,7 @@ function Authors() {
       try {
         // Fetch authors
         const response = await fetch(
-          "https://www.googleapis.com/books/v1/volumes?q=a&maxResults=36"
+          "https://www.googleapis.com/books/v1/volumes?q=a&maxResults=40"
         );
 
         const data = await response.json();
@@ -85,7 +85,8 @@ function Authors() {
             authorsData.push({
               name: authorName,
               image:
-                authorImage || "https://placehold.co/200x300?text=No+Image",
+              authorImage || "https://placehold.co/200x300?text=No+Image",
+              shortName: authorName.length > 15 ? authorName.substring(0, 15) + "..." : authorName,
             });
           }
         });
@@ -120,8 +121,21 @@ function Authors() {
       const data = await response.json();
 
       if (data.items) {
-        const newAuthors = [];
-        data.items.forEach((item) => {
+
+        const newAuthors = allAuthors.slice(displayCount, displayCount + 20);
+
+        if (newAuthors.length > 0) {
+          setAuthors(newAuthors);
+          setDisplayCount(prev => prev + 20);
+
+          document.getElementById('popular-authors-section')?.scrollIntoView({ behavior: 'smooth' });
+          
+        } else {
+          setAuthors(allAuthors.slice(0, 20));
+          setDisplayCount(20);
+        }
+
+        data.items.forEach((item) => { 
           const authorName = item.volumeInfo?.authors?.[0];
           const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
 
@@ -264,7 +278,8 @@ function Authors() {
               </h2>
 
               <div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6"
+              id="popular-authors-section">
                 {popularAuthors.map((author, index) => (
                   <Link
                     key={index}
