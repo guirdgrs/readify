@@ -13,7 +13,7 @@ function GenreDetail() {
   const { genre } = useParams();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     async function fetchBooksByGenre() {
       
@@ -51,13 +51,16 @@ function GenreDetail() {
       <Navbar />
       <BackButton />
       <motion.div 
-      className="max-w-7xl mx-auto p-6 mt-20" 
+      className="max-w-7xl mx-auto p-6 mt-20 text-center" 
       {...fadeSlideUp}>
 
         <h1 
         className="text-4xl font-bold text-violet-700 mb-8 text-center">
           {genre} Books
         </h1>
+
+        <hr 
+        className="border-t-2 border-violet-300 mb-8"/>
 
         {loading ? (
           <Loading />
@@ -94,6 +97,9 @@ function GenreDetail() {
                 ))}
               </div>
             </div>
+
+            <hr 
+            className="border-t-2 border-violet-300 mb-8"/>
 
             <h2 
             className="text-2xl font-semibold text-violet-600 mb-6">

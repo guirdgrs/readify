@@ -60,6 +60,8 @@ function Authors() {
   useEffect(() => {
     async function fetchAuthors() {
 
+      setLoading(true);
+
       try {
         // Fetch authors
         const response = await fetch(
