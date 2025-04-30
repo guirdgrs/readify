@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { fadeSlideUp } from "../utils/motionConfig";
 import { Link } from "react-router-dom";
 import GenreCarousel from "../carousel/GenreCarousel";
+import SeeMoreButton from "../utils/SeeMoreButton";
 
 function Books() {
   // State for books
@@ -271,15 +272,12 @@ function Books() {
             className="border-t-2 border-violet-300 mb-8 mt-10"/>
 
             {!searchQuery && (
-              <div 
-              className="mt-8 flex justify-center">
+              <div className="mt-8 flex justify-center">
 
-                <button
-                  onClick={fetchBooks}
-                  className="px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors cursor-pointer">
-                    See More
-                </button>
-                
+                <SeeMoreButton 
+                onClick={fetchBooks} 
+                loading={loading}/>
+
               </div>
             )}
           </>
