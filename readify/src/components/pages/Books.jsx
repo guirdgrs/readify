@@ -104,6 +104,7 @@ function Books() {
           image: item.volumeInfo.imageLinks?.thumbnail || "https://placehold.co/200x300?text=No+Image",
           link: item.volumeInfo.infoLink,
           categories: item.volumeInfo.categories || [],
+          shortName: item.volumeInfo.title.length > 15 ? item.volumeInfo.title.substring(0, 15) + "..." : item.volumeInfo.title,
         }));
         setBooks(formattedBooks);
         setSearchResults(formattedBooks);
@@ -261,7 +262,7 @@ function Books() {
 
                   <p 
                   className="font-medium">
-                    {book.title}
+                    {book.shortName || book.title}
                   </p>
 
                 </Link>
