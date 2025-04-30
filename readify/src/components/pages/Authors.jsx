@@ -13,7 +13,8 @@ function Authors() {
   // State for authors
   const [authors, setAuthors] = useState([]);
   const [allAuthors, setAllAuthors] = useState([]);
-  const [displayCount, setDisplayCount] = useState(20);
+  const [currentPage, setCurrentPage] = useState(0);
+  const authorsPerPage = 20;
 
   // State for popular authors
   const [popularAuthors, setPopularAuthors] = useState([]);
@@ -95,7 +96,7 @@ function Authors() {
         authorsData = authorsData.sort(() => 0.5 - Math.random());
 
         setAllAuthors(authorsData);
-        setAuthors(authorsData.slice(0, displayCount));
+        setAuthors(authorsData.slice(0, authorsPerPage));
         setPopularAuthors(predefinedPopularAuthors);
 
       } catch {
@@ -108,54 +109,61 @@ function Authors() {
   }, []);
 
   const loadMoreAuthors = async () => {
-
     setLoadingMore(true);
-
+    
     try {
-      const randomChar = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+      // First check if there are more authors to load
+      const nextPage = currentPage + 1;
+      const startIndex = nextPage * authorsPerPage;
+      
+      if (startIndex < allAuthors.length) {
+        // If there are more authors to load, show them
+        setAuthors(allAuthors.slice(startIndex, startIndex + authorsPerPage));
+        setCurrentPage(nextPage);
+        
+      } else {
+        // In the end, fetch more random authors
+        const randomChar = String.fromCharCode(97 + Math.floor(Math.random() * 26));
 
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${randomChar}&maxResults=20`
-      );
-
-      const data = await response.json();
-
-      if (data.items) {
-
-        const newAuthors = allAuthors.slice(displayCount, displayCount + 20);
-
-        if (newAuthors.length > 0) {
-          setAuthors(newAuthors);
-          setDisplayCount(prev => prev + 20);
-
-          document.getElementById('popular-authors-section')?.scrollIntoView({ behavior: 'smooth' });
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes?q=${randomChar}&maxResults=${authorsPerPage}&langRestrict=en`
+        );
+        
+        const data = await response.json();
+  
+        if (data.items) {
+          const newAuthors = [];
           
-        } else {
-          setAuthors(allAuthors.slice(0, 20));
-          setDisplayCount(20);
-        }
-
-        data.items.forEach((item) => { 
-          const authorName = item.volumeInfo?.authors?.[0];
-          const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
-
-          if (authorName && !allAuthors.find(a => a.name === authorName) && 
-              !newAuthors.find(a => a.name === authorName)) {
-            newAuthors.push({
-              name: authorName,
-              image: authorImage || "https://placehold.co/200x300?text=No+Image",
-            });
+          data.items.forEach((item) => {
+            const authorName = item.volumeInfo?.authors?.[0];
+            const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
+  
+            if (authorName && !allAuthors.find(a => a.name === authorName)) {
+              newAuthors.push({
+                name: authorName,
+                image: authorImage || "https://placehold.co/200x300?text=No+Image",
+                shortName: authorName.length > 15 ? `${authorName.substring(0, 15)}...` : authorName,
+              });
+            }
+          });
+  
+          if (newAuthors.length > 0) {
+            // Add new authors to allAuthors
+            const updatedAuthors = [...allAuthors, ...newAuthors];
+            setAllAuthors(updatedAuthors);
+            
+            // Show new authors
+            setAuthors(newAuthors);
+            setCurrentPage(0); // Reset current page
           }
-        });
-
-        const updatedAuthors = [...allAuthors, ...newAuthors].sort(() => 0.5 - Math.random());
-
-        setAllAuthors(updatedAuthors);
-        setAuthors(updatedAuthors.slice(0, displayCount + newAuthors.length));
-        setDisplayCount(prev => prev + newAuthors.length);
+        }
       }
+
+      // Scroll to top
+      document.getElementById('popular-authors-section')?.scrollIntoView({ behavior: 'smooth' });
+      
     } catch {
-      <AuthorNotFound />;
+      <AuthorNotFound/>;
     } finally {
       setLoadingMore(false);
     }
@@ -349,7 +357,7 @@ function Authors() {
                     )}
                     <p 
                     className="font-medium">
-                      {author.name}
+                      {author.shortName || author.name}
                     </p>
                     
                   </Link>
