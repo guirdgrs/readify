@@ -9,12 +9,7 @@ const SeeMoreButton = ({ onClick, loading, className = "" }) => {
       onClick={onClick}
       disabled={loading}
       className={`px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 cursor-pointer ${className}`}>
-
-      {loading ? (
-        <Loading/>
-      ) : (
-        "See More"
-      )}
+        See More
     </motion.button>
   );
 };

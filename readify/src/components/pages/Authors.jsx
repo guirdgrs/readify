@@ -7,16 +7,20 @@ import Navbar from "../navbar/Navbar";
 import Loading from "../utils/Loading";
 import Fuse from "fuse.js";
 import BackButton from "../utils/BackButton";
+import SeeMoreButton from "../utils/SeeMoreButton";
 
 function Authors() {
   // State for authors
   const [authors, setAuthors] = useState([]);
+  const [allAuthors, setAllAuthors] = useState([]);
+  const [displayCount, setDisplayCount] = useState(20);
 
   // State for popular authors
   const [popularAuthors, setPopularAuthors] = useState([]);
 
   // State for loading
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // State for search authors
   const [searchQuery, setSearchQuery] = useState("");
@@ -86,10 +90,11 @@ function Authors() {
           }
         });
 
-        // Shuffle authors
+         // Shuffle and set authors
         authorsData = authorsData.sort(() => 0.5 - Math.random());
 
-        setAuthors(authorsData);
+        setAllAuthors(authorsData);
+        setAuthors(authorsData.slice(0, displayCount));
         setPopularAuthors(predefinedPopularAuthors);
 
       } catch {
@@ -100,6 +105,47 @@ function Authors() {
     }
     fetchAuthors();
   }, []);
+
+  const loadMoreAuthors = async () => {
+
+    setLoadingMore(true);
+
+    try {
+      const randomChar = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${randomChar}&maxResults=20`
+      );
+
+      const data = await response.json();
+
+      if (data.items) {
+        const newAuthors = [];
+        data.items.forEach((item) => {
+          const authorName = item.volumeInfo?.authors?.[0];
+          const authorImage = item.volumeInfo?.imageLinks?.thumbnail;
+
+          if (authorName && !allAuthors.find(a => a.name === authorName) && 
+              !newAuthors.find(a => a.name === authorName)) {
+            newAuthors.push({
+              name: authorName,
+              image: authorImage || "https://placehold.co/200x300?text=No+Image",
+            });
+          }
+        });
+
+        const updatedAuthors = [...allAuthors, ...newAuthors].sort(() => 0.5 - Math.random());
+
+        setAllAuthors(updatedAuthors);
+        setAuthors(updatedAuthors.slice(0, displayCount + newAuthors.length));
+        setDisplayCount(prev => prev + newAuthors.length);
+      }
+    } catch {
+      <AuthorNotFound />;
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   // Handle search
   useEffect(() => {
@@ -119,7 +165,7 @@ function Authors() {
       setLoading(true);
       try {
         // First try exact matches from existing authors
-        const fuse = new Fuse([...authors, ...popularAuthors], {
+        const fuse = new Fuse([...allAuthors, ...popularAuthors], {
           keys: ["name"],
           threshold: 0.5,
           includeScore: true,
@@ -185,7 +231,7 @@ function Authors() {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, authors, popularAuthors]);
+  }, [searchQuery, allAuthors, popularAuthors]);
 
   const displayedAuthors = searchQuery.trim().length > 0 ? searchResults : authors;
 
@@ -295,6 +341,15 @@ function Authors() {
                 ))
               )}
             </div>
+            {!searchQuery && (
+              <div className="mt-8 flex justify-center">
+
+                <SeeMoreButton 
+                onClick={loadMoreAuthors} 
+                loading={loadingMore}/>
+
+              </div>
+            )}
           </>
         ) : (
           <AuthorNotFound />
