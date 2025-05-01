@@ -52,4 +52,6 @@ export const hoverSpring2 = {
     exit:{opacity: 0, scale: 0.8, y: 50},
     transition:{duration: 0.4},
   }
+
+  
   
