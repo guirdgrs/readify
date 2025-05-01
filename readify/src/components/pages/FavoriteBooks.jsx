@@ -3,15 +3,17 @@ import Navbar from "../navbar/Navbar.jsx";
 import BookCard from "../bookdetail/BookCard.jsx";
 import BackButton from "../utils/BackButton.jsx";
 import { motion } from "framer-motion";
-import { fadeSlideUp, loadingScale } from "../utils/motionConfig.js";
+import { fadeSlideUp, hoverSpring2, loadingScale } from "../utils/motionConfig.js";
 import BookNotFound from "../bookdetail/BookNotFound.jsx";
-import { Frown } from "lucide-react";
+import { Frown, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function FavoriteBooks() {
   const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
+
+    window.scrollTo(0, 0);
 
     const favBooks = [];
 
@@ -30,6 +32,15 @@ function FavoriteBooks() {
 
     setFavorites(favBooks);
   }, []);
+
+  const handleRemoveFavorite = (bookId) => {
+    // Remove from localStorage
+    localStorage.removeItem(`favorite_${bookId}`);
+  
+    // Update the state
+    setFavorites((prev) => prev.filter((book) => book.id !== bookId));
+    
+  };
 
   return (
     <div>
@@ -75,9 +86,19 @@ function FavoriteBooks() {
           <div 
           className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {favorites.map((book) => (
-              <BookCard 
-              key={book.id} 
-              book={book} />
+                <div 
+                key={book.id}
+                className="relative group">
+    
+                    <BookCard book={book} />
+
+                    <motion.button
+                    onClick={() => handleRemoveFavorite(book.id)}
+                    className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-md z-10 cursor-pointer"
+                    {...hoverSpring2}>
+                        <Trash2 />
+                    </motion.button>
+                </div>
             ))}
           </div>
         )}
