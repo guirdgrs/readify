@@ -119,9 +119,26 @@ function FavoriteBooks() {
                         <Trash2 />
                     </motion.button>
                 </div>
+                
             ))}
+            
           </div>
         )}
+
+        <hr 
+        className="border-t-2 border-violet-300 mt-15"/>
+
+        <Link 
+            to="/books"
+            className="inline-block mt-10">
+
+                <motion.p
+                className="bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-xl shadow-md"
+                {...hoverSpring2}>
+                    Add more books
+                </motion.p>
+
+            </Link>
       </motion.div>
     </div>
   );
