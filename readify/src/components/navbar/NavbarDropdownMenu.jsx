@@ -38,7 +38,7 @@ function NavbarDropdownMenu({ dropdownRef, onClose }) {
       </Link>
 
       <Link 
-      to="/favorites" 
+      to="/favoritebooks" 
       onClick={onClose}>
         <NavbarItem 
         label="Favorites"/>

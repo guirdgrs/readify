@@ -7,6 +7,7 @@ import Authors from './components/pages/Authors.jsx';
 import Books from './components/pages/Books.jsx';
 import Genres from './components/pages/Genres.jsx';
 import GenreDetail from './components/pages/GenreDetail.jsx';
+import FavoriteBooks from './components/pages/FavoriteBooks.jsx';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/authors" element={<Authors />} />
         <Route path="/books" element={<Books />} />
         <Route path="/genredetail/:genre" element={<GenreDetail />} />
+        <Route path="/favoritebooks" element={<FavoriteBooks />} />
       </Routes>
     </Router>
   );
