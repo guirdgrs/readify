@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import { fadeSlideUp, hoverSpring2, loadingScale } from "../utils/motionConfig.js";
 import BookNotFound from "../bookdetail/BookNotFound.jsx";
 import { Frown, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import Swal from 'sweetalert2';
 
 function FavoriteBooks() {
   const [favorites, setFavorites] = useState([]);
@@ -34,11 +35,30 @@ function FavoriteBooks() {
   }, []);
 
   const handleRemoveFavorite = (bookId) => {
-    // Remove from localStorage
-    localStorage.removeItem(`favorite_${bookId}`);
-  
-    // Update the state
-    setFavorites((prev) => prev.filter((book) => book.id !== bookId));
+    Swal.fire({
+        title: "Remove from favorites?",
+        text: "This book will no longer appear in your favorites.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Yes, remove it",
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+
+          localStorage.removeItem(`favorite_${bookId}`);
+          setFavorites((prev) => prev.filter((book) => book.id !== bookId));
+    
+          Swal.fire({
+            title: "Removed!",
+            text: "The book was removed from your favorites.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: true,
+          });
+        }
+      });
     
   };
 
