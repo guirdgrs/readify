@@ -41,6 +41,7 @@ function Books() {
 
   // Fetch popular books
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function fetchPopularBooks() {
       try {
 

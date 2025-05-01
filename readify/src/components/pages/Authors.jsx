@@ -63,6 +63,7 @@ function Authors() {
   ];
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function fetchAuthors() {
 
       setLoading(true);
