@@ -28,6 +28,7 @@ function App() {
         <Route path="/books" element={<Books />} />
         <Route path="/genredetail/:genre" element={<GenreDetail />} />
         <Route path="/favoritebooks" element={<FavoriteBooks />} />
+        <Route path="/genres" element={<Genres />} />
       </Routes>
     </Router>
   );

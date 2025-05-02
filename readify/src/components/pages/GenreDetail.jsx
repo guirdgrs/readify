@@ -104,7 +104,7 @@ function GenreDetail() {
 
             <h2 
             className="text-2xl font-semibold text-violet-600 mb-6">
-              All Books from this Genre
+              Others Books from this Genre
             </h2>
 
             <div 
