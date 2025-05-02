@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
 import BackButton from "../utils/BackButton";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { backgroundModal, fadeOutModal, fadeSlideUp, hoverSpring2 } from "../utils/motionConfig";
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Search } from "lucide-react";
 
 const genres = [
     "Fantasy", "Science Fiction", "Mystery", "Romance", "Horror", "Thriller", "Dystopian", "Biography", "Classic Literature", "Historical Fiction", "Poetry", "Self-Help"
@@ -18,9 +18,30 @@ function Genres() {
 
     const [showModal, setShowModal] = useState(false);
 
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const navigate = useNavigate();
+
     const handleBackdropClick = (e) => {
+
         if (e.target.id === "modal-backdrop") {
           setShowModal(false);
+        }
+      };
+
+    const handleSearchSubmit = () => {
+        
+        if (searchQuery.trim().length > 0) {
+          navigate(`/genredetail/${encodeURIComponent(searchQuery.trim())}`);
+          setShowModal(false);
+          setSearchQuery("");
+        }
+    };
+
+    // Function to handle keydown event on Enter
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+          handleSearchSubmit();
         }
       };
 
@@ -72,6 +93,7 @@ function Genres() {
 
       </motion.div>
 
+      <AnimatePresence>
       {showModal && (
         <motion.div 
         id="modal-backdrop"
@@ -95,6 +117,25 @@ function Genres() {
               Other Genres
             </h2>
 
+            <div className="flex items-center gap-2 mb-6">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Search genre..."
+                  className="w-full border border-violet-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"/>
+
+                <motion.button
+                  onClick={handleSearchSubmit}
+                  className="bg-violet-600 hover:bg-violet-700 text-white p-2 rounded cursor-pointer"
+                  {...hoverSpring2}>
+                    <Search size={20} />
+                </motion.button>
+
+              </div>
+
+
             <hr 
             className="border-t-2 border-violet-300 mb-8"/>
 
@@ -115,6 +156,7 @@ function Genres() {
           </motion.div>
         </motion.div>
       )}
+      </AnimatePresence>
 
     </div>
   );
