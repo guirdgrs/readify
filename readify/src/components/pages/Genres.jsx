@@ -3,7 +3,7 @@ import Navbar from "../navbar/Navbar";
 import BackButton from "../utils/BackButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { backgroundModal, fadeOutModal, fadeSlideUp, hoverSpring2 } from "../utils/motionConfig";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { X, Search } from "lucide-react";
 
 const genres = [
@@ -20,7 +20,11 @@ function Genres() {
 
     const [searchQuery, setSearchQuery] = useState("");
 
+    // State for filtered suggestions
+    const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+
     const navigate = useNavigate();
+
 
     const handleBackdropClick = (e) => {
 
@@ -44,6 +48,51 @@ function Genres() {
           handleSearchSubmit();
         }
       };
+
+      useEffect(() => {
+
+        const delayDebounce = setTimeout(async () => {
+
+          // If the search query is less than 3 characters, clear the filtered suggestions
+          if (searchQuery.trim().length < 3) {
+            setFilteredSuggestions([]);
+            return;
+          }
+      
+          try {
+            // Fetch genres from the API
+            const response = await fetch(
+              `https://www.googleapis.com/books/v1/volumes?q=subject:${encodeURIComponent(searchQuery)}&maxResults=10`
+            );
+
+            const data = await response.json();
+      
+            if (data.items) {
+              const genresFromAPI = new Set();
+      
+              data.items.forEach((item) => {
+
+                // Extract genres from the API response
+                const categories = item.volumeInfo?.categories;
+
+                if (categories && categories.length > 0) {
+                  categories.forEach((category) => genresFromAPI.add(category));
+                }
+              });
+      
+              // Set the filtered suggestions state with the extracted genres
+              setFilteredSuggestions(Array.from(genresFromAPI));
+            } else {
+              setFilteredSuggestions([]);
+            }
+          } catch {
+            setFilteredSuggestions([]);
+          }
+        }, 200);
+      
+        return () => clearTimeout(delayDebounce);
+      }, [searchQuery]);
+      
 
   return (
     <div>
@@ -117,24 +166,43 @@ function Genres() {
               Other Genres
             </h2>
 
-            <div className="flex items-center gap-2 mb-6">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Search genre..."
-                  className="w-full border border-violet-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"/>
+            <div className="relative mb-6">
+                <div className="flex items-center gap-2">
 
-                <motion.button
-                  onClick={handleSearchSubmit}
-                  className="bg-violet-600 hover:bg-violet-700 text-white p-2 rounded cursor-pointer"
-                  {...hoverSpring2}>
-                    <Search size={20} />
-                </motion.button>
+                    <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Search genre..."
+                    className="w-full border border-violet-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"/>
 
-              </div>
+                    <motion.button
+                    onClick={handleSearchSubmit}
+                    className="bg-violet-600 hover:bg-violet-700 text-white p-2 rounded cursor-pointer"
+                    {...hoverSpring2}>
+                        <Search size={20} />
+                    </motion.button>
+                    
+                </div>
 
+            {filteredSuggestions.length > 0 && (
+                <ul className="absolute z-20 mt-1 w-full bg-white border border-violet-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                {filteredSuggestions.slice(0, 5).map((genre) => (
+                    <li
+                    key={genre}
+                    onClick={() => {
+                        navigate(`/genredetail/${encodeURIComponent(genre)}`);
+                        setShowModal(false);
+                        setSearchQuery("");
+                    }}
+                    className="px-4 py-2 text-violet-700 hover:bg-violet-300 cursor-pointer transition-colors duration-150 rounded-md">
+                        {genre}
+                    </li>
+                ))}
+                </ul>
+            )}
+            </div>
 
             <hr 
             className="border-t-2 border-violet-300 mb-8"/>
@@ -153,6 +221,7 @@ function Genres() {
 
               ))}
             </div>
+
           </motion.div>
         </motion.div>
       )}
