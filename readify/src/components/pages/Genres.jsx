@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
 import BackButton from "../utils/BackButton";
 import { motion } from "framer-motion";
-import { fadeSlideUp, hoverSpring2 } from "../utils/motionConfig";
+import { backgroundModal, fadeOutModal, fadeSlideUp, hoverSpring2 } from "../utils/motionConfig";
 import { useState } from "react";
 import { X } from "lucide-react";
 
@@ -17,6 +17,12 @@ const genres = [
 function Genres() {
 
     const [showModal, setShowModal] = useState(false);
+
+    const handleBackdropClick = (e) => {
+        if (e.target.id === "modal-backdrop") {
+          setShowModal(false);
+        }
+      };
 
   return (
     <div>
@@ -40,7 +46,7 @@ function Genres() {
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
           {genres.map((genre) => (
             <Link
-              key={genre.name}
+              key={genre}
               to={`/genredetail/${encodeURIComponent(genre)}`}
               className="bg-violet-200 hover:bg-violet-300 rounded-lg shadow-lg p-4 text-center transition duration-200">
 
@@ -67,14 +73,20 @@ function Genres() {
       </motion.div>
 
       {showModal && (
-        <div 
-        className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 p-4">
-          <div 
-          className="bg-white rounded-lg p-6 w-full max-w-lg relative">
+        <motion.div 
+        id="modal-backdrop"
+        onClick={handleBackdropClick}
+        className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30 p-4"
+        {...backgroundModal}>
+
+          <motion.div 
+          className="bg-white rounded-lg p-6 w-full max-w-lg relative"
+          {...fadeSlideUp }>
 
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-3 right-3 text-red-500 hover:bg-red-200 border-md rounded-md cursor-pointer py-2 px-2">
+              className="absolute top-3 right-3 text-red-500 hover:bg-red-200 border-md rounded-md cursor-pointer py-2 px-2"
+              {...fadeOutModal}>
                 <X size={24} />
             </button>
 
@@ -100,8 +112,8 @@ function Genres() {
 
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
 
     </div>
