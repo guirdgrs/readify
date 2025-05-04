@@ -81,7 +81,7 @@ function GenreDetail() {
                 {popularGenreBooks.map((book, index) => (
                   <Link
                     key={index}
-                    to={`/book/${encodeURIComponent(book.title)}`}
+                    to={`/book/${encodeURIComponent(book.id)}`}
                     className="flex flex-col items-center bg-pink-200 p-4 rounded-lg shadow hover:bg-pink-300 text-center">
 
                     <img 
@@ -112,7 +112,7 @@ function GenreDetail() {
               {books.map((book, index) => (
                 <Link
                   key={index}
-                  to={`/book/${encodeURIComponent(book.title)}`}
+                  to={`/book/${encodeURIComponent(book.id)}`}
                   className="flex flex-col items-center bg-violet-200 p-4 rounded-lg shadow hover:bg-violet-300 text-center">
 
                   <img 
