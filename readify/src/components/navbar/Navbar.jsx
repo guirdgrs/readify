@@ -71,7 +71,7 @@ function Navbar() {
         to ="/">
 
         <motion.div
-          className="hover:text-pink-400 cursor-pointer"
+          className="hover:text-pink-400 cursor-pointer hover:bg-pink-200 p-2 rounded"
           {...hoverSpring}>
 
           <BookOpenText 
@@ -92,7 +92,7 @@ function Navbar() {
       </div>
 
       <div 
-      className="flex items-center gap-4 text-center mr-7">
+      className="flex items-center gap-4 text-center">
         {/* Title */}
         <Link 
         to="/">

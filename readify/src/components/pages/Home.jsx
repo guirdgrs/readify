@@ -27,7 +27,7 @@ function App() {
               </h2>
 
               <p 
-              className="text-lg max-w-3xl mx-auto text-gray-300 border border-pink-400 rounded p-4 text-shadow-black text-shadow-2xs">
+              className="text-lg max-w-3xl mx-auto text-violet-200  text-shadow-black text-shadow-2xs">
                 This is a virtual library developed as a personal project to practice and deepen my knowledge in
                 <span 
                 className="text-pink-400 font-semibold"> React</span>, 
