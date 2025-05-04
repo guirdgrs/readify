@@ -8,13 +8,16 @@ function NavbarDropdownMenu({ dropdownRef, onClose }) {
   return (
     <motion.div
       ref={dropdownRef}
-      className="absolute top-20 left-6 bg-violet-300 text-purple-800 rounded-md p-4 px-8 flex flex-col gap-2 text-center"
+      className="absolute top-18 left-6 bg-violet-300 text-purple-800 rounded-md p-4 px-8 flex flex-col gap-2 text-center border border-pink-400 shadow-2xl shadow-violet-800"
       {...fadeSlide}>
 
       <div 
       className="flex justify-center text-violet-600">
         <Book size={30} />  
       </div>
+
+      <hr
+      className="mb-2" />
 
       <Link 
       to="/books" 
