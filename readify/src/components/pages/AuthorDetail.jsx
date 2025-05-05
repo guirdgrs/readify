@@ -57,7 +57,7 @@ function AuthorDetail() {
 
       <motion.div
         {...fadeSlideUp}
-        className="max-w-6xl mx-auto p-6 mt-20 text-center">
+        className="max-w-6xl mx-auto p-6 mt-25 text-center">
 
         <h1 
         className="text-3xl font-bold mb-6 text-violet-700">

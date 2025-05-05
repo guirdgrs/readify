@@ -122,7 +122,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
 
         // If books are available, render the carousel
         <motion.div 
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-5xl mx-auto pt-15"
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-4xl mx-auto pt-10"
         {...fadeSlideUp}>
 
         {/* Genre */}

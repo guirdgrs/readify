@@ -53,11 +53,11 @@ function GenreDetail() {
       <Navbar />
       <BackButton />
       <motion.div 
-      className="max-w-7xl mx-auto p-6 mt-20 text-center" 
+      className="max-w-7xl mx-auto p-6 mt-25 text-center" 
       {...fadeSlideUp}>
 
         <h1 
-        className="text-4xl font-bold text-violet-700 mb-8 text-center">
+        className="text-4xl font-bold text-violet-700 mb-8 text-center capitalize">
           {genre} Books
         </h1>
 

@@ -233,7 +233,7 @@ function BookDetail() {
         <Navbar />
         <BackButton />
         <motion.div
-        className="max-w-4xl mx-auto p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative mt-20"
+        className="max-w-4xl mx-auto p-6 bg-violet-300 rounded-2xl shadow-lg text-violet-800 relative mt-30"
         {...fadeSlideUp}>
 
         <div 

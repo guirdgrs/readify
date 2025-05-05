@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div 
-    className="flex flex-col min-h-screen bg-gradient-to-br from-purple-400 via-black-300 to-gray-900 text-white mt-15">
+    className="flex flex-col min-h-screen bg-gradient-to-br from-purple-400 via-black-300 to-gray-900 text-white mt-20">
           <Navbar/>
 
             {/* About Section */}

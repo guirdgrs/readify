@@ -264,7 +264,7 @@ function Authors() {
       <Navbar />
       <BackButton />
       <motion.div
-      className="max-w-7xl mx-auto p-6 mt-20 text-center" 
+      className="max-w-7xl mx-auto p-6 mt-25 text-center" 
       {...fadeSlideUp}>
 
         <h1 

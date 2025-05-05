@@ -49,7 +49,7 @@ function GenreCarousel() {
   return (
     <AnimatePresence>
       <motion.div
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-5xl mx-auto pt-15"
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-5xl mx-auto pt-10"
         {...fadeSlideUp}>
 
         <h2 

@@ -70,7 +70,7 @@ function FavoriteBooks() {
       <BackButton />
 
       <motion.div
-        className="max-w-6xl mx-auto p-6 mt-20 text-center"
+        className="max-w-6xl mx-auto p-6 mt-25 text-center"
         {...fadeSlideUp}>
             
         <h1 className="text-3xl font-bold text-violet-700 mb-6">
