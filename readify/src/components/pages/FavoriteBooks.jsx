@@ -5,7 +5,7 @@ import BackButton from "../utils/BackButton.jsx";
 import { motion } from "framer-motion";
 import { fadeSlideUp, hoverSpring2, loadingScale } from "../utils/motionConfig.js";
 import BookNotFound from "../bookdetail/BookNotFound.jsx";
-import { Frown, Trash2 } from "lucide-react";
+import { ChevronDown, Frown, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom"
 import Swal from 'sweetalert2';
 import Footer from "../utils/Footer.jsx";
@@ -88,19 +88,11 @@ function FavoriteBooks() {
             {...loadingScale}>
                 <Frown className="mx-auto"/>
                 You have no favorite books yet.
+                <br />
+                <i>You can add books to your favorites by clicking on the button down below.</i>
+                
+                <ChevronDown className="mx-auto mt-5"/>
             </motion.p>
-
-            <Link 
-            to="/books"
-            className="inline-block mt-10">
-
-                <motion.p
-                className="bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-xl shadow-md"
-                {...loadingScale}>
-                    Add a book
-                </motion.p>
-
-            </Link>
 
           </div>
         ) : (
@@ -135,7 +127,8 @@ function FavoriteBooks() {
 
                 <motion.p
                 className="bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-xl shadow-md"
-                {...hoverSpring2}>
+                {...hoverSpring2}
+                {...loadingScale}>
                     Add more books
                 </motion.p>
 
