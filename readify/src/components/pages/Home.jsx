@@ -1,6 +1,7 @@
 import Navbar from '../navbar/Navbar.jsx'
 import BookCarousel from '../carousel/BookCarousel.jsx'
 import { motion } from 'framer-motion'; 
+import Footer from '../utils/Footer.jsx';
 
 function App() {
 
@@ -47,6 +48,8 @@ function App() {
             key={genres} 
             delay={500}/>
           )))}
+
+          <Footer />
     </div>
   );
 }
