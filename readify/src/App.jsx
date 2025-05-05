@@ -8,6 +8,7 @@ import Books from './components/pages/Books.jsx';
 import Genres from './components/pages/Genres.jsx';
 import GenreDetail from './components/pages/GenreDetail.jsx';
 import FavoriteBooks from './components/pages/FavoriteBooks.jsx';
+import About from './components/pages/About.jsx';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/genredetail/:genre" element={<GenreDetail />} />
         <Route path="/favoritebooks" element={<FavoriteBooks />} />
         <Route path="/genres" element={<Genres />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

@@ -1,7 +1,7 @@
 import Navbar from '../navbar/Navbar.jsx'
 import BookCarousel from '../carousel/BookCarousel.jsx'
 import { motion } from 'framer-motion'; 
-import Footer from '../utils/Footer.jsx';
+import Footer from '../utils/Footer.jsx'; 
 
 function App() {
 
@@ -13,7 +13,7 @@ function App() {
   return (
     <div 
     className="flex flex-col min-h-screen bg-gradient-to-br from-purple-400 via-black-300 to-gray-900 text-white mt-20">
-          <Navbar/>
+          <Navbar />
 
             {/* About Section */}
             <motion.section

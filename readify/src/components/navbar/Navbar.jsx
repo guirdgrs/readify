@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BookOpenText, User, AlignJustify, Bookmark } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeSlide, hoverSpring } from "../utils/motionConfig.js";
+import { fadeSlide, fadeSlideDown, hoverSpring } from "../utils/motionConfig.js";
 import NavbarItem from "./NavbarItem";
 import NavbarDropdownMenu from "./NavbarDropdownMenu";
 import NavbarDropdownLogin from "./NavbarDropdownLogin";
@@ -62,7 +62,7 @@ function Navbar() {
   return (
     <motion.nav
       className="bg-violet-500 shadow-md px-6 py-4 flex justify-between fixed top-0 left-0 right-0 z-50"
-      {...fadeSlide}>
+      {...fadeSlideDown}>
 
       <div 
       className="text-pink-300 flex items-center gap-4">
