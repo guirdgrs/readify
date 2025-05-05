@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import '../../App.css';
 import Loading from "../utils/Loading.jsx";
 import BookNotFound from "../authordetail/AuthorNotFound.jsx";
+import SeeMoreButton from "../utils/SeeMoreButton.jsx";
 
 function BookCarousel({ genre = "", delay = 0 }) {
   // State to store the list of books
@@ -122,7 +123,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
 
         // If books are available, render the carousel
         <motion.div 
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-4xl mx-auto pt-10"
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl p-4 max-w-4xl mx-auto pt-10 shadow-2xl shadow-pink-400"
         {...fadeSlideUp}>
 
         {/* Genre */}
@@ -141,7 +142,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
             {/* Left scroll button */}
             <button
             onClick={() => scroll("left")}
-            className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
+            className="p-2 text-violet-600 hover:text-violet-800 hover:bg-pink-400 rounded cursor-pointer">
                 <ChevronLeft />
             </button>
 
@@ -180,17 +181,29 @@ function BookCarousel({ genre = "", delay = 0 }) {
 
                   </motion.div>
                 </Link>
+                
             ))}  {/* Book item ends here */}
             </div>
+            
 
                 {/* Right scroll button */}
                 <button
                 onClick={() => scroll("right")}
-                className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
+                className="p-2 text-violet-600 hover:text-violet-800 hover:bg-pink-400 rounded cursor-pointer">
                     <ChevronRight />
                 </button>
 
         </div> {/* Carousel content ends here */}
+
+        <Link to = "/books">
+
+          <div 
+          className="w-full flex justify-center mt-8">
+            <SeeMoreButton />
+          </div>
+
+            </Link>
+        
         </motion.div>
           ) : (
           <div 
