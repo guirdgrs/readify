@@ -8,6 +8,7 @@ import Loading from "../utils/Loading";
 import Fuse from "fuse.js";
 import BackButton from "../utils/BackButton";
 import SeeMoreButton from "../utils/SeeMoreButton";
+import Footer from "../utils/Footer";
 
 function Authors() {
   // State for authors
@@ -379,6 +380,9 @@ function Authors() {
           <AuthorNotFound />
         )}
       </motion.div>
+
+      <Footer />
+
     </div>
   );
 }

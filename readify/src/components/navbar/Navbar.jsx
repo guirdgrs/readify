@@ -98,7 +98,7 @@ function Navbar() {
         to="/">
 
         <motion.p 
-        className="text-bold text-3xl text-pink-300 select-none font-black">
+        className="text-bold text-3xl mr-12 text-pink-300 select-none font-black">
           Readify
         </motion.p>
 

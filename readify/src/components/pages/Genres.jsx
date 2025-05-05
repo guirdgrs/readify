@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { backgroundModal, fadeOutModal, fadeSlideUp, hoverSpring2 } from "../utils/motionConfig";
 import { useState, useEffect} from "react";
 import { X, Search } from "lucide-react";
+import Footer from "../utils/Footer";
 
 const genres = [
     "Fantasy", "Science Fiction", "Mystery", "Romance", "Horror", "Thriller", "Dystopian", "Biography", "Classic Literature", "Historical Fiction", "Poetry", "Self-Help"
@@ -101,7 +102,7 @@ function Genres() {
       <BackButton />
 
       <motion.div 
-      className="max-w-7xl mx-auto p-6 mt-20 text-center" 
+      className="max-w-7xl mx-auto p-6 mt-30 text-center" 
       {...fadeSlideUp}>
 
         <h1 
@@ -226,6 +227,8 @@ function Genres() {
         </motion.div>
       )}
       </AnimatePresence>
+
+      <Footer />
 
     </div>
   );

@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { fadeSlideUp } from "../utils/motionConfig";
 import { Link } from "react-router-dom";
 import { Book } from "lucide-react";
+import Footer from "../utils/Footer";
 
 function GenreDetail() {
   const { genre } = useParams();
@@ -133,6 +134,8 @@ function GenreDetail() {
           <BookNotFound />
         )}
       </motion.div>
+
+      <Footer />
     </div>
   );
 }

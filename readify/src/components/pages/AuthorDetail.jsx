@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { fadeSlideUp } from "../utils/motionConfig";
 import BookNotFound from "../authordetail/AuthorNotFound";
 import BackButton from "../utils/BackButton";
+import Footer from "../utils/Footer";
 
 function AuthorDetail() {
   const { authorName } = useParams();
@@ -79,6 +80,9 @@ function AuthorDetail() {
           <BookNotFound />
         )}
       </motion.div>
+
+      <Footer />
+
     </div>
   );
 }

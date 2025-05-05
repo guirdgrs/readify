@@ -14,6 +14,7 @@ import withReactContent from 'sweetalert2-react-content'
 import { Link } from "react-router-dom";
 import BackButton from "../utils/BackButton.jsx";
 import AuthorNotFound from "../authordetail/AuthorNotFound.jsx";
+import Footer from "../utils/Footer.jsx";
 
 function BookDetail() {
   // useParams is a hook from react-router-dom that allows you to access the URL parameters of the current route
@@ -424,6 +425,9 @@ function BookDetail() {
 
         </motion.div>
       )}
+
+      <Footer />
+
     </div>
   );
 }

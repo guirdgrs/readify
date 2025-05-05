@@ -8,6 +8,7 @@ import BookNotFound from "../bookdetail/BookNotFound.jsx";
 import { Frown, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom"
 import Swal from 'sweetalert2';
+import Footer from "../utils/Footer.jsx";
 
 function FavoriteBooks() {
   const [favorites, setFavorites] = useState([]);
@@ -140,6 +141,9 @@ function FavoriteBooks() {
 
             </Link>
       </motion.div>
+
+      <Footer />
+
     </div>
   );
 }

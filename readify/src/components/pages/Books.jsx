@@ -10,6 +10,7 @@ import { fadeSlideUp } from "../utils/motionConfig";
 import { Link } from "react-router-dom";
 import GenreCarousel from "../carousel/GenreCarousel";
 import SeeMoreButton from "../utils/SeeMoreButton";
+import Footer from "../utils/Footer";
 
 function Books() {
   // State for books
@@ -285,6 +286,9 @@ function Books() {
           </>
         )}
       </motion.div>
+
+      <Footer />
+
     </div>
   );
 }
