@@ -31,7 +31,7 @@ function BackButton({dropdownOpen}) {
       whileTap={{ scale: 0.95 }}
       // function to navigate to the previous page
       onClick={() => navigate(-1)}
-      className="fixed left-6 bottom-115 flex items-center gap-2 bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-full shadow-lg z-50 cursor-pointer"
+      className="fixed left-4 top-32 sm:left-6 sm:top-32 flex items-center gap-2 bg-violet-500 hover:bg-violet-600 text-white px-4 py-2 rounded-full shadow-lg z-50 cursor-pointer"
       style={{
         opacity: dropdownOpen ? 0 : opacity,
         pointerEvents: dropdownOpen ? "none" : "auto",
