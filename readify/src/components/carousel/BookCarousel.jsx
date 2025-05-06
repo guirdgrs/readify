@@ -123,7 +123,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
 
         // If books are available, render the carousel
         <motion.div 
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl p-4 max-w-4xl mx-auto pt-10 shadow-2xl shadow-pink-400"
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl p-4 w-full max-w-4xl px-2 mx-auto pt-10 shadow-2xl shadow-pink-400"
         {...fadeSlideUp}>
 
         {/* Genre */}
@@ -162,7 +162,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
                 key={book.id}>
 
                   <motion.div
-                  className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
+                  className="w-[150px] sm:w-[120px] md:w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
                   {...hoverSpring2}
                   {...showCarousel}>
 
@@ -170,7 +170,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
                     <img
                         src={book.cover}
                         alt={book.title}
-                        className="rounded-md mb-2 w-full h-[220px] object-cover shadow-violet-600 shadow-lg"
+                        className="rounded-md mb-2 w-full h-[200px] sm:h-[220px] object-cover shadow-violet-600 shadow-lg"
                         {...fadeSlide}/>
 
                     {/* Title */}
@@ -210,7 +210,7 @@ function BookCarousel({ genre = "", delay = 0 }) {
           className="text-center text-violet-700 py-6">
 
             <p 
-            className="text-lg">😓 
+            className="text-lg">
               <BookNotFound/>
             </p>
           </div>

@@ -129,7 +129,7 @@ function FavoriteBooks() {
                 className="bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded-xl shadow-md"
                 {...hoverSpring2}
                 {...loadingScale}>
-                    Add more books
+                    Add books...
                 </motion.p>
 
             </Link>

@@ -49,7 +49,7 @@ function GenreCarousel() {
   return (
     <AnimatePresence>
       <motion.div
-        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 max-w-5xl mx-auto pt-10"
+        className="relative my-8 bg-violet-300 border-violet-200 rounded-2xl shadow-md p-4 w-full max-w-5xl mx-auto px-2 pt-10"
         {...fadeSlideUp}>
 
         <h2 
@@ -80,14 +80,14 @@ function GenreCarousel() {
                 to={`/genredetail/${encodeURIComponent(genre.name)}`}>
                     
                 <motion.div
-                  className="w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
+                  className="w-[150px] sm:w-[120px] md:w-[150px] flex-shrink-0 bg-violet-100 rounded-lg shadow-md p-2 text-center"
                   {...hoverSpring2}
                   {...showCarousel}>
 
                   <img
                     src={genre.image}
                     alt={genre.name}
-                    className="rounded-md mb-2 w-full h-[220px] object-cover shadow-violet-600 shadow-lg"/>
+                    className="rounded-md mb-2 w-full h-[200px] sm:h-[220px] object-cover shadow-violet-600 shadow-lg"/>
 
                   <p 
                   className="text-md text-violet-800 font-medium line-clamp-2">
