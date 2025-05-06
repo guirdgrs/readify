@@ -65,7 +65,7 @@ function GenreCarousel() {
 
           <button
             onClick={() => scroll("left")}
-            className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
+            className="p-2 text-violet-600 hover:text-violet-800 hover:bg-pink-400 rounded cursor-pointer">
               <ChevronLeft />
           </button>
 
@@ -101,7 +101,7 @@ function GenreCarousel() {
 
           <button
             onClick={() => scroll("right")}
-            className="p-2 text-violet-600 hover:text-violet-800 cursor-pointer">
+            className="p-2 text-violet-600 hover:text-violet-800 hover:bg-pink-400 rounded cursor-pointer">
               <ChevronRight />
           </button>
           
