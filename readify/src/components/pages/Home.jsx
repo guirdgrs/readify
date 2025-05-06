@@ -26,7 +26,7 @@ function App() {
               className="text-4xl font-bold mb-4 text-pink-400 text-shadow-black text-shadow-2xs">
                 About the project
               </h2>
-
+    
               <p 
               className="text-lg max-w-3xl mx-auto text-violet-200  text-shadow-black text-shadow-2xs">
                 This is a virtual library developed as a personal project to practice and deepen my knowledge in

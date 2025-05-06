@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { use, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { fadeSlideUp, hoverSpring, hoverSpring2, showCarousel } from "../utils/motionConfig.js";
@@ -70,25 +70,44 @@ function BookDetail() {
     setShowFeedback(false);
   };
 
+  const feedbackRef = useRef(null);
   const handleToggleFeedback = () => {
     setShowFeedback((prev => !prev)); //If its open it close, if its close it opens
+    setTimeout(() => {
+      feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
   }
-
+  
   //Controllers for animation by scrolling
   const controls = useAnimation();
-  const [ref, inView] = useInView({
-    threshold: 0.05,
-    rootMargin: "0px 0px 50% 0px",
-    triggerOnce: true, // Trigger only once
-  });
 
-  // Animation effect for the author and genre section
+  // Checks if the device is mobile
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
-    // Start the animation when the author and genre section is in view
-    if(inView) {
+    const handleResize = () => {
+      // Update the isMobile state based on the window width
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Conditional rendering based on the screen width
+  const [ref, inView] = useInView({
+    threshold: 0.5,
+    rootMargin: "0px 0px 45% 0px", 
+    triggerOnce: true,
+  });
+  
+  // If the device is mobile starts visible
+  useEffect(() => {
+    if (inView && !isMobile) {
       controls.start("visible");
     }
-  }, [inView, controls]);
+  }, [inView, controls, isMobile]);
+
 
   useEffect(() => {
 
@@ -303,7 +322,7 @@ function BookDetail() {
 
                         <Link
                           to={`/author/${encodeURIComponent(author)}`}
-                          className="text-violet-700 hover:text-violet-900">
+                          className="text-violet-700 hover:text-violet-900 hover:bg-pink-400 px-2 rounded-md">
                           {author}
                         </Link>
 
@@ -329,10 +348,13 @@ function BookDetail() {
 
         <AnimatePresence>
         {showFeedback && (
-          <FeedbackSection 
-          onClose={()=> setShowFeedback(false)}
-          onSend={handleFeedbackSend}
-          {...showFeedback}/>)}
+          <div
+          ref={feedbackRef}>
+            <FeedbackSection 
+            onClose={()=> setShowFeedback(false)}
+            onSend={handleFeedbackSend}
+            {...showFeedback}/>
+          </div>)}
         </AnimatePresence>
 
         {/* Books by the same author section */}
@@ -340,8 +362,8 @@ function BookDetail() {
         <motion.div
           ref={ref} // Attach the ref to the author section for inView detection
           className="max-w-6xl mx-auto mt-10 p-6"
-          initial="hidden"
-          animate={controls}
+          initial={isMobile ? "visible" : "hidden"}
+          animate={isMobile ? "visible" : controls}
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0,
@@ -387,8 +409,8 @@ function BookDetail() {
         <motion.div 
           ref={ref}
           className="max-w-6xl mx-auto mt-10 p-6"
-          initial="hidden"
-          animate={controls}
+          initial={isMobile ? "visible" : "hidden"}
+          animate={isMobile ? "visible" : controls}
           variants={{
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0,
