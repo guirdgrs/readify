@@ -61,7 +61,7 @@ function Navbar() {
 
   return (
     <motion.nav
-      className="bg-violet-500 shadow-md px-6 py-4 flex justify-between fixed top-0 left-0 right-0 z-50"
+      className="bg-violet-500 shadow-md px-4 py-3 flex flex-wrap items-center justify-between fixed top-0 left-0 right-0 z-50"
       {...fadeSlideDown}>
 
       <div 
@@ -75,7 +75,8 @@ function Navbar() {
           {...hoverSpring}>
 
           <BookOpenText 
-          size={40}/>
+          size={40}
+          className="sm:w-10 w-8 sm:h-10 h-8"/>
 
         </motion.div>
         </Link>
@@ -98,7 +99,7 @@ function Navbar() {
         to="/">
 
         <motion.p 
-        className="text-bold text-3xl mr-12 text-pink-300 select-none font-black">
+        className="text-bold text-2xl sm:text-3xl text-pink-300 select-none font-black ml-auto md:ml-0">
           Readify
         </motion.p>
 
@@ -107,7 +108,7 @@ function Navbar() {
 
       {/* Your profile button */}
       <div 
-      className="hidden md:flex space-x-6 items-center">
+      className="flex items-center gap-2 px-4 py-2 text-violet-800 hover:bg-pink-200 rounded-md">
 
         <motion.button
           ref={loginButtonRef}
